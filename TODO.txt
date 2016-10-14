@@ -1,0 +1,5 @@
+I suggest reviewing http://pages.cs.wisc.edu/~psilord/blog/data/chess-pages/
+for information about how chess works with bitboards.
+It is not a complete archive of information (in fact the author
+has not gotten very far) but the information there is very clear and concise
+compared to all of the other sources that I saw.
