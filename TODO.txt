@@ -1,5 +1,22 @@
-I suggest reviewing http://pages.cs.wisc.edu/~psilord/blog/data/chess-pages/
+1. Read up on Bitboards (see below for suggested website)
+2. Don't use namespace std except in a local context
+
+
+
+(1) I suggest reviewing http://pages.cs.wisc.edu/~psilord/blog/data/chess-pages/
 for information about how chess works with bitboards.
 It is not a complete archive of information (in fact the author
 has not gotten very far) but the information there is very clear and concise
 compared to all of the other sources that I saw.
+
+(2) Using namespace std in the global scope of the program can be bad because it
+can result in a function that was implemented in both the namespace and the using
+program to clash. Seeing as we are implementing this seperately I would suggest we
+do not use the namespace in a global scope. If you would like to use it in a more local
+scope such as in a class, that is fine. Also DO NOT place using namespace anything in the
+header files. This will result in every program using your header being forced to use the
+namespace. It would likely not be a problem to use the namespace std (as opposed to others)
+in a global scope, but in general it is a good thing to avoid. 
+
+Short answer short, it is a bad idea as it is similar declaring a
+variable in a global scope.
