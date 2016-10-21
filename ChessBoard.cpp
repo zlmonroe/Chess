@@ -4,7 +4,7 @@
 
 short ChessBoard::getRowFromChar(char letter) {
     short val = (short)tolower(letter)-(short)'a';
-    return val<9 ? val:-1;
+    return val<9 ? val:(short)-1;
 }
 
 bool ChessBoard::queryPiece(char column,short row, Bitboard board) {
@@ -46,14 +46,14 @@ char* ChessBoard::userInput() {
         std::cin >> c2;
         std::cin.clear();
         std::cin.ignore();
-        c1 = tolower(c1);
+        c1 = (char)tolower(c1);
     }
     while (c2>'8' || c1>'i' || c2<'0' || c1<'a');
     char *s = new char[2]{c1,c2};
     return s;
 }
 
-short ChessBoard::findBoard(bool white, char* pos) {
+/*short ChessBoard::findBoard(bool white, char* pos) {
     short column = getRowFromChar(pos[0]);
     short row = (int)pos[1]-(int)'1';
     if (white) {
@@ -74,7 +74,22 @@ short ChessBoard::findBoard(bool white, char* pos) {
         }
         return -1;
     }
+}*/
+short ChessBoard::findBoard(bool white, char* pos) {
+    short column = getRowFromChar(pos[0]);
+    short row = (short)pos[1]-(short)'1';
+    Bitboard loc = COLUMNMASK[column] & ROWMASK[row];
+    //Bitboard* colorPieces[6] = white ? &WhitePieces : &BlackPieces;
+    short i;
+    for (i=5; i>=0; i--) {
+        if ((white ? WhitePieces[i] : BlackPieces[i]) & loc) {
+            std::cout << PIECES[i] << " found at " << pos[0] << pos[1] << "\n";
+            break;
+        }
+    }
+    return i;
 }
+
 std::bitset<64> ChessBoard::printableBitboard(Bitboard board) {
     std::bitset<64> x(board);
     return x;
