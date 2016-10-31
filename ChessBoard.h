@@ -6,11 +6,12 @@ class ChessBoard {
 private:
 	/* The white piece positions */
 	//WhitePawns,WhiteRooks, WhiteKnights, WhiteBishops, WhiteQueens, WhiteKing
-	Bitboard WhitePieces[6];
 
 	/* The black piece positions */
 	//BlackPawns,BlackRooks, BlackKnights, BlackBishops, BlackQueens, BlackKing
-	Bitboard BlackPieces[6];
+
+	// Bitboard containing white pieces at [0] and black pieces at [1]
+	Bitboard pieces[2][6];
 
 	/* Commonly derived positions */
 	Bitboard AllWhitePieces;
@@ -21,11 +22,11 @@ private:
 
 public:
     std::bitset<64> printableBitboard(Bitboard board);
-    Bitboard* getWhitePieces() {return WhitePieces;}
-    Bitboard* getBlackPieces() {return BlackPieces;}
+    Bitboard* getWhitePieces() {return pieces[0];}
+    Bitboard* getBlackPieces() {return pieces[1];}
 	void setupBoard();
 	char* userInput();
-	short findBoard(bool white, char* pos);
+	uint8_t findBoard(bool white, char* pos);
 
 	Bitboard valid(Bitboard loc, short piece, bool white);
 

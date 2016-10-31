@@ -10,29 +10,30 @@ short ChessBoard::getRowFromChar(char letter) {
 bool ChessBoard::queryPiece(char column,short row, Bitboard board) {
     short file = getRowFromChar(column);
     if (file==-1) {
-        board = board&0;
+        board = board & 0;
     }
     else {
-        board=board&COLUMNMASK[file]&ROWMASK[row];
+        board=board & COLUMNMASK[file] & ROWMASK[row];
     }
     //returns true if population count of board is one
     return  (board != 0 && (board & (board-1)) == 0);
 }
 
 void ChessBoard::setupBoard() {
-    WhitePieces[0] = PAWNSTART&ALLWHITESTART;
-    WhitePieces[1] = ROOKSTART&ALLWHITESTART;
-    WhitePieces[2] = KNIGHTSTART&ALLWHITESTART;
-    WhitePieces[3] = BISHOPSTART&ALLWHITESTART;
-    WhitePieces[4] = QUEENSTART&ALLWHITESTART;
-    WhitePieces[5] = KINGSTART&ALLWHITESTART;
 
-    BlackPieces[0] = PAWNSTART&ALLBLACKSTART;
-    BlackPieces[1] = ROOKSTART&ALLBLACKSTART;
-    BlackPieces[2] = KNIGHTSTART&ALLBLACKSTART;
-    BlackPieces[3] = BISHOPSTART&ALLBLACKSTART;
-    BlackPieces[4] = QUEENSTART&ALLBLACKSTART;
-    BlackPieces[5] = KINGSTART&ALLBLACKSTART;
+    pieces[0][0] = PAWNSTART & ALLWHITESTART;
+    pieces[0][1] = ROOKSTART & ALLWHITESTART;
+    pieces[0][2] = KNIGHTSTART & ALLWHITESTART;
+    pieces[0][3] = BISHOPSTART & ALLWHITESTART;
+    pieces[0][4] = QUEENSTART & ALLWHITESTART;
+    pieces[0][5] = KINGSTART & ALLWHITESTART;
+
+    pieces[1][0] = PAWNSTART & ALLBLACKSTART;
+    pieces[1][1] = ROOKSTART & ALLBLACKSTART;
+    pieces[1][2] = KNIGHTSTART & ALLBLACKSTART;
+    pieces[1][3] = BISHOPSTART & ALLBLACKSTART;
+    pieces[1][4] = QUEENSTART & ALLBLACKSTART;
+    pieces[1][5] = KINGSTART & ALLBLACKSTART;
 
     AllWhitePieces = ALLWHITESTART;
     AllBlackPieces = ALLBLACKSTART;
@@ -53,36 +54,17 @@ char* ChessBoard::userInput() {
     return s;
 }
 
-/*short ChessBoard::findBoard(bool white, char* pos) {
-    short column = getRowFromChar(pos[0]);
-    short row = (int)pos[1]-(int)'1';
-    if (white) {
-        for (short i=0; i<6; i++) {
-            if (WhitePieces[i]&COLUMNMASK[column]&ROWMASK[row]) {
-                    std::cout << PIECES[i] << " found at " << pos[0] << pos[1] << "\n";
-                    return i;
-            }
-        }
-        return -1;
-    }
-    else {
-        for (short i=0; i<6; i++) {
-            if (BlackPieces[i]&COLUMNMASK[column]&ROWMASK[row]) {
-                    std::cout << PIECES[i] << " found at " << pos[0] << pos[1] << "\n";
-                    return i;
-            }
-        }
-        return -1;
-    }
-}*/
-short ChessBoard::findBoard(bool white, char* pos) {
-    short column = getRowFromChar(pos[0]);
-    short row = (short)pos[1]-(short)'1';
-    Bitboard loc = COLUMNMASK[column] & ROWMASK[row];
-    //Bitboard* colorPieces[6] = white ? &WhitePieces : &BlackPieces;
-    short i;
+/**
+ * Determines which
+ * @param white
+ * @param pos
+ * @return
+ */
+uint8_t ChessBoard::findBoard(bool white, char* pos) {
+    Bitboard loc = (Bitboard)1 << ((pos[0] - 'a') + (pos[1] - '1')*8);
+    uint8_t i;
     for (i=5; i>=0; i--) {
-        if ((white ? WhitePieces[i] : BlackPieces[i]) & loc) {
+        if (pieces[!white][i] & loc) {
             std::cout << PIECES[i] << " found at " << pos[0] << pos[1] << "\n";
             break;
         }
