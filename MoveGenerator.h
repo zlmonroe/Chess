@@ -6,7 +6,7 @@
 #define CHESS_MOVEVALIDATOR_H
 
 
-#include "ChessConstBitboards.h"
+#include "Old/ChessConstBitboards.h"
 
 class MoveValidator {
 private:
