@@ -56,16 +56,15 @@ char* ChessBoard::userInput() {
 
 /**
  * Determines which
- * @param white
- * @param pos
+ * @param black true if it is a black piece
+ * @param loc Bitboard with the position
  * @return
  */
-uint8_t ChessBoard::findBoard(bool white, char* pos) {
-    Bitboard loc = (Bitboard)1 << ((pos[0] - 'a') + (pos[1] - '1')*8);
+uint8_t ChessBoard::findBoard(bool black, Bitboard loc) {
     uint8_t i;
     for (i=5; i>=0; i--) {
-        if (pieces[!white][i] & loc) {
-            std::cout << PIECES[i] << " found at " << pos[0] << pos[1] << "\n";
+        if (pieces[!black][i] & loc) {
+            std::cout << PIECE_NAMES[i] << " found at " << pos[0] << pos[1] << "\n";
             break;
         }
     }

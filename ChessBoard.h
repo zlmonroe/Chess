@@ -26,7 +26,7 @@ public:
     Bitboard* getBlackPieces() {return pieces[1];}
 	void setupBoard();
 	char* userInput();
-	uint8_t findBoard(bool white, char* pos);
+	uint8_t findBoard(bool black, Bitboard loc);
 
 	Bitboard valid(Bitboard loc, short piece, bool white);
 

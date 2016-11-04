@@ -7,7 +7,7 @@
     #include <iostream>
     typedef uint64_t Bitboard;
 
-    const std::string PIECES[6] = {"Pawn","Rook","Knight","Bishop","Queen","King"};
+    const std::string PIECE_NAMES[6] = {"Pawn","Rook","Knight","Bishop","Queen","King"};
 
     const Bitboard PAWNSTART        = 0b0000000011111111000000000000000000000000000000001111111100000000;
     const Bitboard ROOKSTART        = 0b1000000100000000000000000000000000000000000000000000000010000001;
