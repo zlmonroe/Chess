@@ -8,7 +8,7 @@
 
 #include "ChessConstBitboards.h"
 
-class MoveValidator {
+class MoveGenerator {
 private:
 
 public:
