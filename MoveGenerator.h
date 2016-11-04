@@ -13,6 +13,11 @@ private:
 
 public:
     Bitboard getBishopMoves(uint8_t position);
+    Bitboard getKightMoves(uint8_t position);
+    Bitboard getKingMoves(uint8_t position);
+    Bitboard getPawnMoves(uint8_t position);
+    Bitboard getQueenMoves(uint8_t position);
+    Bitboard getRookMoves(uint8_t position);
 };
 
 
