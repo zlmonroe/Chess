@@ -1,5 +1,5 @@
 #include "ChessBoard.h"
-#include "ChessConstBitboards.h"
+#include "../ChessConstBitboards.h"
 #include <ctype.h>
 
 short ChessBoard::getRowFromChar(char letter) {
