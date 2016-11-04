@@ -1,6 +1,10 @@
 1. Read up on Bitboards (see below for suggested website)
 2. Don't use namespace std except in a local context
 
+3.  Zach and John Rook then Bishop then Queen
+    Vatricia Player then King
+    Dillon Validate then Pawn then CheckMate
+    Tim Knight, Check, StaleMate
 
 
 (1) I suggest reviewing http://pages.cs.wisc.edu/~psilord/blog/data/chess-pages/
