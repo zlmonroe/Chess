@@ -1,6 +1,5 @@
 // ChessPlayer.cpp : Defines the entry point for the console application.
 //
-
 #include "player.h"
 #include <iostream>
 #include <string>
@@ -8,11 +7,11 @@
 
 int main()
 {
-	ChessPlayer p = ChessPlayer(0);
+	ChessPlayer p = ChessPlayer(1);
 	std::cout << std::bitset<16>(p.getConvertInput());
 	return 0;
 }
-ChessPlayer::ChessPlayer(unsigned short c) {
+ChessPlayer::ChessPlayer(bool c) {
 	color = c;
 }
 unsigned short ChessPlayer::getConvertInput() {
@@ -31,39 +30,40 @@ unsigned short ChessPlayer::getConvertInput() {
 	std::cout << "Enter your move";
 	std::getline(std::cin, input);
 
-	startC = ((int)input[0]-65);
+	startC = ((int)toupper(input[0])-65);
 	startR = ((int)input[1]-49);
 	stPos = startR * 8 + startC;
 
-	endC = ((int)input[2] - 65);
+	endC = ((int)toupper(input[2]) - 65);
 	endR = ((int)input[3] - 49);
 	enPos = endR * 8 + endC;
 
-	special = input[4];
-
-	switch (special) {
-	case 'n':
+	if (input.length() == 4) {
 		spInt = 0;
-		break;
-	case 'r':
-		spInt = 0b110;
-		break;
-	case 'l':
-		spInt = 0b101;
-		break;
-	case 'q':
-		spInt = 0b100;
-		break;
-	case 'c':
-		spInt = 0b001;
-		break;
-	case 'b':
-		spInt = 0b011;
-		break;
-	case 'k':
-		spInt = 0b010;
-		break;
 	}
-	move = (color<<1) + (spInt << 3) + (stPos<<6) + (enPos);
+	else {
+		special = toupper(input[4]);
+		switch (special) {
+		case 'R':
+			spInt = 0b110;
+			break;
+		case 'L':
+			spInt = 0b101;
+			break;
+		case 'Q':
+			spInt = 0b100;
+			break;
+		case 'C':
+			spInt = 0b001;
+			break;
+		case 'B':
+			spInt = 0b011;
+			break;
+		case 'K':
+			spInt = 0b010;
+			break;
+		}
+	}
+	move = (color<<15) + (spInt << 12) + (stPos<<6) + (enPos);
 	return move;
 }
