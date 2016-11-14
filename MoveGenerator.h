@@ -12,12 +12,12 @@ class MoveGenerator {
 private:
 
 public:
-    Bitboard getBishopMoves(uint8_t position, bool isWhite);
-    Bitboard getKightMoves(uint8_t position, bool isWhite);
-    Bitboard getKingMoves(uint8_t position, bool isWhite);
-    Bitboard getPawnMoves(uint8_t position, bool isWhite);
-    Bitboard getQueenMoves(uint8_t position, bool isWhite);
-    Bitboard getRookMoves(uint8_t position, bool isWhite);
+    Bitboard getBishopMoves(uint8_t position, bool isBlack);
+    Bitboard getKightMoves(uint8_t position, bool isBlack);
+    Bitboard getKingMoves(uint8_t position, bool isBlack);
+    Bitboard getPawnMoves(uint8_t position, bool isBlack);
+    Bitboard getQueenMoves(uint8_t position, bool isBlack);
+    Bitboard getRookMoves(uint8_t position, bool isBlack);
 };
 
 
