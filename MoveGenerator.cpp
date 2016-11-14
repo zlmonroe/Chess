@@ -16,11 +16,11 @@ Bitboard MoveGenerator::getKightMoves(uint8_t position, bool isBlack) {
     Bitboard clearGH = COLUMNCLEAR[6]&COLUMNCLEAR[7];
     Bitboard own;
     if (isBlack)
-        own = ALLBLACKSTART;
+        own = ALLBLACKSTART; //Switch to allBlackPieces when implemented
     else
-        own = ALLWHITESTART;
+        own = ALLWHITESTART; //Switch to allWhitePieces when implemented
 
-    return ((((start&clearA)<<15)|((start&clearAB)<<6)|((start&clearAB)>>10)|((start&clearA)>>17)|((start&clearH)>>15)|((start&clearGH)>>6)|((start&clearGH)<<10)|(start&clearH)<<17)&!own);
+    return ((((start&clearA)<<15)|((start&clearAB)<<6)|((start&clearAB)>>10)|((start&clearA)>>17)|((start&clearH)>>15)|((start&clearGH)>>6)|((start&clearGH)<<10)|(start&clearH)<<17)&~own);
 }
 
 Bitboard MoveGenerator::getKingMoves(uint8_t position, bool isBlack) {
