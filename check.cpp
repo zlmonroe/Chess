@@ -29,7 +29,7 @@ Bitboard Check::getAllMoves(bool color) {
 				break;
 			case 5:
 				totalMoves = totalMoves | MoveGenerator::getKingMoves(location, color);
-				break;
+				break; //not necessary
 			}
 		}
 	}
