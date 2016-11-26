@@ -128,7 +128,7 @@ int main() {
 
                 //slides[bishop][sq][index] = a[i];
 
-                database << a[i] << ",";
+                database << a[i] << "ULL,";
 
             }
             for (; i < 4096; i++) {

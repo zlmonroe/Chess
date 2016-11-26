@@ -6,5 +6,6 @@
 
 Bitboard getQueenMoves(short color, Bitboard bStart) {
 
-    return getRookMoves(color, bStart) | getBishopMoves(color,bStart);
+    //return getRookMoves(color, bStart) | getBishopMoves(color,bStart);
+    return 0ULL;
 }
