@@ -47,5 +47,5 @@ Bitboard Check::getKingPos(bool color) {
 	}
 }
 Bitboard Check::check(bool color) {
-	return ((bool)(getKingPos(color) && getAllMoves(!color)));
+	return ((bool)(ChesBoard::pieces[color][5] && getAllMoves(!color)));
 }
