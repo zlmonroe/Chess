@@ -45,7 +45,7 @@ Bitboard Check::getAllMoves(bool color) {
 			}
 		}
 	}
-	Bitboard Check::check(bool aColor, bool dColor) {
-		return ((bool)(getKingPos(dColor) && getAllMoves(aColor)));
+	Bitboard Check::check(bool color) {
+		return ((bool)(getKingPos(color) && getAllMoves(!color)));
 	}
 }
