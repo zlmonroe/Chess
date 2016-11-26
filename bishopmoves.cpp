@@ -14,4 +14,6 @@ Bitboard getBishopMoves(short color, Bitboard bStart) {
 
     Bitboard bArray = ((AllPieces & BOccupancy[pos]) * BMagic[pos]) >> (64-BBits[pos]);
     std::cout << bArray;
+
+    return slides[1][pos][bArray];
 }

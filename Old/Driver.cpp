@@ -1,4 +1,4 @@
-#include "ChessBoard.h"
+#include "../ChessBoard.h"
 
 int main() {
     ChessBoard cb = ChessBoard();

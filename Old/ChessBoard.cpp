@@ -1,4 +1,4 @@
-#include "ChessBoard.h"
+#include "../ChessBoard.h"
 #include "../ChessConstBitboards.h"
 #include <ctype.h>
 

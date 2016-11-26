@@ -1,4 +1,4 @@
-#include "../ChessConstBitboards.h"
+#include "ChessConstBitboards.h"
 #include <iostream>
 #include <bitset>
 
