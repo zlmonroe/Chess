@@ -32,20 +32,20 @@ Bitboard Check::getAllMoves(bool color) {
 				break;
 			}
 		}
-		return totalMoves;
 	}
-	Bitboard Check::getKingPos(bool color) {
-		int piece;
-		Bitboard location;
-		for (int i = 0; i < 64; i++) {
-			location = 1 << i;
-			piece = ChessBoard::findBoard(color, location);
-			if (piece = 5) {
-				return location;
-			}
+	return totalMoves;
+}
+Bitboard Check::getKingPos(bool color) {
+	int piece;
+	Bitboard location;
+	for (int i = 0; i < 64; i++) {
+		location = 1 << i;
+		piece = ChessBoard::findBoard(color, location);
+		if (piece = 5) {
+			return location;
 		}
 	}
-	Bitboard Check::check(bool color) {
-		return ((bool)(getKingPos(color) && getAllMoves(!color)));
-	}
+}
+Bitboard Check::check(bool color) {
+	return ((bool)(getKingPos(color) && getAllMoves(!color)));
 }
