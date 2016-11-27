@@ -104,40 +104,56 @@ uint64_t index_to_uint64(int index, int bits, uint64_t m) {
 
 int main() {
 
-    std::ofstream database;
-    database.open ("slidingMoves.txt");
 
-    static Bitboard* slides[2][64][4096];
 
-    database << "slides[2][64][4096] = {\n";
+    static Bitboard slides[2][64][4096];
+
+
 
     for (int bishop = 0; bishop < 2; bishop++) {
-        database << "{";
+        //database << "{";
         for (int sq = 0; sq < 64; sq++) {
-            database << "{";
+            //database << "{";
             uint64_t b[4096], a[4096], used[4096];
             Bitboard mask = bishop ? bmask(sq) : rmask(sq);
             int n = count_1s(mask);
             int max = 0;
             int i;
+            for (i = 0; i < 4096; i++) {
+                slides[bishop][sq][i] = 0ULL;
+            }
             for (i = 0; i < (1 << n); i++) {
                 b[i] = index_to_uint64(i, n, mask);             // blocks
                 a[i] = bishop ? batt(sq, b[i]) : ratt(sq, b[i]); // attacks
 
-                //uint64_t index = ((b[i] & ROccupancy[sq]) * RMagic[sq]) >> (64 - RBits[sq]);
+                uint64_t index = ((b[i] & ROccupancy[sq]) * RMagic[sq]) >> (64 - RBits[sq]);
 
-                //slides[bishop][sq][index] = a[i];
+                slides[bishop][sq][index] = a[i];
 
-                database << a[i] << "ULL,";
+                //database << a[i] << "ULL,";
 
             }
-            for (; i < 4096; i++) {
-                database << "0ULL,";
+
+            //database << "},\n";
+        }
+        //database << "},\n";
+    }
+
+    std::ofstream database;
+    database.open ("slidingMoves.txt");
+    database << "static const Bitboard slides[2][64][4096] = {\n";
+    for (int bishop = 0; bishop < 2; bishop++) {
+        database << "{";
+        for (int sq = 0; sq < 64; sq++) {
+            database << "{";
+            for (int index = 0; index < 4096; index++) {
+                database << slides[bishop][sq][index] << "ULL,";
             }
             database << "},\n";
         }
         database << "},\n";
     }
+
 
     database << "};";
     database.close();
