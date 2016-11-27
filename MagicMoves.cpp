@@ -126,7 +126,7 @@ int main() {
                 b[i] = index_to_uint64(i, n, mask);             // blocks
                 a[i] = bishop ? batt(sq, b[i]) : ratt(sq, b[i]); // attacks
 
-                uint64_t index = ((b[i] & ROccupancy[sq]) * RMagic[sq]) >> (64 - RBits[sq]);
+                uint64_t index = !bishop ? ((b[i] & ROccupancy[sq]) * RMagic[sq]) >> (64 - RBits[sq]) : ((b[i] & BOccupancy[sq]) * BMagic[sq]) >> (64 - BBits[sq]);
 
                 slides[bishop][sq][index] = a[i];
 
