@@ -64,7 +64,7 @@ Bitboard MoveGenerator::getAllMoves(bool color) {
 				break;
 			case 5:
 				totalMoves = totalMoves | MoveGenerator::getKingMoves(location, color);
-				break; //not necessary
+				break;
 			}
 		}
 	}
