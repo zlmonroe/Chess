@@ -18,6 +18,7 @@ public:
     Bitboard getPawnMoves(uint8_t position, bool isBlack);
     Bitboard getQueenMoves(uint8_t position, bool isBlack);
     Bitboard getRookMoves(uint8_t position, bool isBlack);
+    Bitboard getAllMoves(bool color);
 };
 
 
