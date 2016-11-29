@@ -8,7 +8,7 @@
 	"ChessConstBitboards.h"
 	<iostream>
 
-1480391196 c:\users\zachary\documents\c++\chess2.0\chessconstbitboards.h
+1480459025 c:\users\zachary\documents\c++\chess2.0\chessconstbitboards.h
 	<stdint.h>
 	<iostream>
 
@@ -33,7 +33,7 @@
 	<string>
 	<bitset>
 
-1480394459 source:c:\users\zachary\documents\c++\chess2.0\movegenerator.cpp
+1480459138 source:c:\users\zachary\documents\c++\chess2.0\movegenerator.cpp
 	"MoveGenerator.h"
 	"magics.h"
 	"ChessConstBitboards.h"

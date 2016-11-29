@@ -12,6 +12,7 @@
 
 Bitboard MoveGenerator::getBishopMoves(unsigned short pos, bool isBlack) {
     Bitboard bArray = ((chessBoard[0].AllPieces & BOccupancy[pos]) * BMagic[pos]) >> (64-BBits[pos]);
+    std::cout << "Bishop array " << bArray;
     return slides[1][pos][bArray];
 }
 
@@ -143,6 +144,12 @@ default:
 }
 
 void MoveGenerator::uncheckedMove(bool player, short piece, unsigned short start, unsigned short end) {
+    short whitePiece = chessBoard[0].findBoard(1,(Bitboard)1<<end);
+    short blackPiece = chessBoard[0].findBoard(0,(Bitboard)1<<end);
+    std::cout << whitePiece << " " << blackPiece;
+    if (whitePiece>-1) chessBoard[0].pieces[0][whitePiece]-=((Bitboard)1<<end);
+    else if (blackPiece>-1) chessBoard[0].pieces[1][blackPiece]-=((Bitboard)1<<end);
+
     chessBoard[0].pieces[player][piece] = chessBoard[0].pieces[player][piece] - ((Bitboard)1<<start) + ((Bitboard)1<<end);
     chessBoard[0].AllPieces = (chessBoard[0].AllPieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
     chessBoard[0].AllBlackPieces = (chessBoard[0].AllBlackPieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
