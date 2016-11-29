@@ -48,22 +48,22 @@ Bitboard MoveGenerator::getAllMoves(bool color) {
 		if (piece> 0) {
 			switch (piece) {
 			case 0:
-				totalMoves = totalMoves | MoveGenerator::getPawnMoves(location, color);
+				totalMoves = totalMoves | MoveGenerator::getPawnMoves(i, color);
 				break;
 			case 1:
-				totalMoves = totalMoves | MoveGenerator::getRookMoves(location, color);
+				totalMoves = totalMoves | MoveGenerator::getRookMoves(i, color);
 				break;
 			case 2:
-				totalMoves = totalMoves | MoveGenerator::getKnightMoves(location, color);
+				totalMoves = totalMoves | MoveGenerator::getKnightMoves(i, color);
 				break;
 			case 3:
-				totalMoves = totalMoves | MoveGenerator::getBishopMoves(location, color);
+				totalMoves = totalMoves | MoveGenerator::getBishopMoves(i, color);
 				break;
 			case 4:
-				totalMoves = totalMoves | MoveGenerator::getQueenMoves(location, color);
+				totalMoves = totalMoves | MoveGenerator::getQueenMoves(i, color);
 				break;
 			case 5:
-				totalMoves = totalMoves | MoveGenerator::getKingMoves(location, color);
+				totalMoves = totalMoves | MoveGenerator::getKingMoves(i, color);
 				break;
 			}
 		}
