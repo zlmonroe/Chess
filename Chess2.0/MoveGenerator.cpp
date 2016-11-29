@@ -11,9 +11,14 @@
 
 
 Bitboard MoveGenerator::getBishopMoves(unsigned short pos, bool isBlack) {
-    Bitboard bArray = ((chessBoard[0].AllPieces & BOccupancy[pos]) * BMagic[pos]) >> (64-BBits[pos]);
+    Bitboard index = ((chessBoard[0].AllPieces & BOccupancy[pos]) * BMagic[pos]) >> (64-BBits[pos]);
     std::cout << "Bishop array " << bArray;
-    return slides[1][pos][bArray];
+    return slides[1][pos][index] & ~(isBlack? AllBlackPieces : AllWhitePieces);
+}
+
+Bitboard MoveGenerator::getRookMoves(unsigned short pos, bool isBlack) {
+    Bitboard index = ((chessBoard[0].AllPieces & ROccupancy[pos]) * RMagic[pos]) >> (64-RBits[pos]);
+    return slides[0][pos][bArray] & ~(isBlack? AllBlackPieces : AllWhitePieces);
 }
 
 Bitboard MoveGenerator::getKnightMoves(unsigned short position, bool isBlack) {
@@ -65,14 +70,11 @@ Bitboard MoveGenerator::getPawnMoves(unsigned short position, bool isBlack) {
     return all_moves_possible;
 }
 
-Bitboard MoveGenerator::getRookMoves(unsigned short pos, bool isBlack) {
-    Bitboard bArray = ((chessBoard[0].AllPieces & ROccupancy[pos]) * RMagic[pos]) >> (64-RBits[pos]);
-    return slides[0][pos][bArray];
-}
+
 
 
 Bitboard MoveGenerator::getQueenMoves(unsigned short position, bool isBlack) {
-    return 0;
+    return getRookMoves(position, isBlack) | getBishopMoves(position, isBlack);
 }
 
 bool MoveGenerator::isValidMove(unsigned short userMove) {
