@@ -7,18 +7,15 @@
 #include "ChessConstBitboards.h"
 #include "Chessboard.h"
 #include <bitset>
+#include "printBitboard.h"
 
 
-
-Bitboard MoveGenerator::getBishopMoves(uint8_t pos, bool isBlack) {
-    pos--;
-
+Bitboard MoveGenerator::getBishopMoves(unsigned short pos, bool isBlack) {
     Bitboard bArray = ((chessBoard[0].AllPieces & BOccupancy[pos]) * BMagic[pos]) >> (64-BBits[pos]);
-    std::cout << bArray;
-    return 1;
+    return slides[1][pos][bArray];
 }
 
-Bitboard MoveGenerator::getKnightMoves(uint8_t position, bool isBlack) {
+Bitboard MoveGenerator::getKnightMoves(unsigned short position, bool isBlack) {
     Bitboard start = 1<<position;
     Bitboard clearA = COLUMNCLEAR[0];
     Bitboard clearAB = COLUMNCLEAR[0]&COLUMNCLEAR[1];
@@ -33,13 +30,16 @@ Bitboard MoveGenerator::getKnightMoves(uint8_t position, bool isBlack) {
     return ((((start&clearA)<<15)|((start&clearAB)<<6)|((start&clearAB)>>10)|((start&clearA)>>17)|((start&clearH)>>15)|((start&clearGH)>>6)|((start&clearGH)<<10)|(start&clearH)<<17)&~own);
 }
 
-Bitboard MoveGenerator::getKingMoves(uint8_t position, bool isBlack) {
+Bitboard MoveGenerator::getKingMoves(unsigned short position, bool isBlack) {
     return 0;
 }
 
-Bitboard MoveGenerator::getPawnMoves(uint8_t position, bool isBlack) {
-    Bitboard pos = (Bitboard)(1<<position);
-
+Bitboard MoveGenerator::getPawnMoves(unsigned short position, bool isBlack) {
+    Bitboard pos = ((Bitboard)1<<(int)position);
+    if (DEBUG) {
+        std::cout<<"Found pawn at this position:\n";
+        printBitboard((Bitboard)1<<(int)position);
+    }
     Bitboard left_attack;
     Bitboard right_attack;
     Bitboard pawn_one_forward;
@@ -55,24 +55,22 @@ Bitboard MoveGenerator::getPawnMoves(uint8_t position, bool isBlack) {
     else {
                 left_attack = ((COLUMNCLEAR[0] & pos) >> 9) & (chessBoard[0].AllWhitePieces | chessBoard[0].Enpessant[1]);
                 right_attack = ((COLUMNCLEAR[7] & pos) >> 7) & (chessBoard[0].AllWhitePieces | chessBoard[0].Enpessant[1]);
-                pawn_one_forward = ((pos >> 8) & ~(chessBoard[0].AllPieces));
-                pawn_two_forward = ((((pos & ROWMASK[7]) >> 8) & ~(chessBoard[0].AllPieces) >> 8) & ~(chessBoard[0].AllPieces));
-
+                pawn_one_forward = ((pos >> 8) & (~chessBoard[0].AllPieces));
+                pawn_two_forward = (((((pos & ROWMASK[6]) >> 8) & ~chessBoard[0].AllPieces)>>8) & ~chessBoard[0].AllPieces);
+                std::cout << "pawn two forward for black moves\n";
+                printBitboard(((((pos & ROWMASK[6]) >> 8) & ~chessBoard[0].AllPieces)>>8) & ~chessBoard[0].AllPieces);
     }
     all_moves_possible = (left_attack | right_attack | pawn_one_forward | pawn_two_forward);
     return all_moves_possible;
 }
 
-Bitboard MoveGenerator::getRookMoves(uint8_t pos, bool isBlack) {
-    pos--;
-
+Bitboard MoveGenerator::getRookMoves(unsigned short pos, bool isBlack) {
     Bitboard bArray = ((chessBoard[0].AllPieces & ROccupancy[pos]) * RMagic[pos]) >> (64-RBits[pos]);
-    std::cout << bArray << std::endl;
-    return 1;
+    return slides[0][pos][bArray];
 }
 
 
-Bitboard MoveGenerator::getQueenMoves(uint8_t position, bool isBlack) {
+Bitboard MoveGenerator::getQueenMoves(unsigned short position, bool isBlack) {
     return 0;
 }
 
@@ -90,7 +88,6 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
     switch (piece) {
 
 case 0:
-
     valid_moves = getPawnMoves(bStart, color);
     break;
 
@@ -125,16 +122,29 @@ default:
     valid_moves = (Bitboard)0x0000;
 
     }
-    if ((bool)((Bitboard)(1<<bEnd) & valid_moves)) {
+    std::cout <<"Your choice\n";
+    printBitboard((Bitboard)1<<bEnd);
+    std::cout <<"Valid moves:\n";
+    printBitboard(valid_moves);
+    std::cout<<"Your choice and valid moves:\n";
+    printBitboard((Bitboard)1<<bEnd & valid_moves);
+    if ((Bitboard)1<<bEnd & valid_moves) {
         uncheckedMove(color, piece, bStart,bEnd);
         return true;
     }
-    else return false;
+    else {
+        if (DEBUG) {
+            std::cout << "The valid moves are: \n";
+            printBitboard(valid_moves);
+            std::cout << "\n";
+        }
+        return false;
+    }
 }
 
-void MoveGenerator::uncheckedMove(bool player, short piece, uint8_t start, uint8_t end) {
-    chessBoard[0].pieces[player][piece] = chessBoard[0].pieces[player][piece] & (~(Bitboard)1<<start) | ((Bitboard)1<<end);
-    chessBoard[0].AllPieces = (chessBoard[0].AllPieces & (~(Bitboard)1<<start)) | ((Bitboard)1<<end);
-    chessBoard[0].AllBlackPieces = (chessBoard[0].AllBlackPieces & (~(Bitboard)1<<start)) | ((Bitboard)1<<end);
-    chessBoard[0].AllWhitePieces = (chessBoard[0].AllWhitePieces & (~(Bitboard)1<<start)) | ((Bitboard)1<<end);
+void MoveGenerator::uncheckedMove(bool player, short piece, unsigned short start, unsigned short end) {
+    chessBoard[0].pieces[player][piece] = chessBoard[0].pieces[player][piece] - ((Bitboard)1<<start) + ((Bitboard)1<<end);
+    chessBoard[0].AllPieces = (chessBoard[0].AllPieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
+    chessBoard[0].AllBlackPieces = (chessBoard[0].AllBlackPieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
+    chessBoard[0].AllWhitePieces = (chessBoard[0].AllWhitePieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
 }

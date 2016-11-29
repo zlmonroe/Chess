@@ -8,11 +8,11 @@
 	"ChessConstBitboards.h"
 	<iostream>
 
-1480101287 c:\users\zachary\documents\c++\chess2.0\chessconstbitboards.h
+1480391196 c:\users\zachary\documents\c++\chess2.0\chessconstbitboards.h
 	<stdint.h>
 	<iostream>
 
-1480362572 source:c:\users\zachary\documents\c++\chess2.0\main.cpp
+1480388898 source:c:\users\zachary\documents\c++\chess2.0\main.cpp
 	"player.h"
 	"ChessBoard.h"
 	"MoveGenerator.h"
@@ -22,26 +22,32 @@
 	<string>
 	<unordered_map>
 
-1480355436 c:\users\zachary\documents\c++\chess2.0\movegenerator.h
+1480390141 c:\users\zachary\documents\c++\chess2.0\movegenerator.h
 	"ChessConstBitboards.h"
 	"ChessBoard.h"
 
-1480130049 source:c:\users\zachary\documents\c++\chess2.0\player.cpp
+1480389106 source:c:\users\zachary\documents\c++\chess2.0\player.cpp
 	"player.h"
+	"ChessConstBitboards.h"
 	<iostream>
 	<string>
 	<bitset>
 
-1480362512 source:c:\users\zachary\documents\c++\chess2.0\movegenerator.cpp
+1480394459 source:c:\users\zachary\documents\c++\chess2.0\movegenerator.cpp
 	"MoveGenerator.h"
 	"magics.h"
 	"ChessConstBitboards.h"
 	"Chessboard.h"
 	<bitset>
+	"printBitboard.h"
 
 1480196955 c:\users\zachary\documents\c++\chess2.0\magics.h
 	<vector>
 
-1480362817 c:\users\zachary\documents\c++\chess2.0\printbitboard.h
+1480379893 c:\users\zachary\documents\c++\chess2.0\printbitboard.h
 	"ChessConstBitboards.h"
+	"ChessBoard.h"
+
+1480379801 source:c:\users\zachary\documents\c++\chess2.0\printbitboard.cpp
+	"printBitboard.h"
 

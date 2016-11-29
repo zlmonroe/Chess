@@ -1,6 +1,7 @@
 // ChessPlayer.cpp : Defines the entry point for the console application.
 //
 #include "player.h"
+#include "ChessConstBitboards.h"
 #include <iostream>
 #include <string>
 #include <bitset>
@@ -60,5 +61,6 @@ unsigned short ChessPlayer::getConvertInput() {
 	}
 
 	unsigned short move = (color<<15) | (spInt << 12) | (stPos<<6) | (enPos);
+	if (DEBUG) std::cout << "start: " << stPos << " end: " << enPos << "\n";
 	return move;
 }

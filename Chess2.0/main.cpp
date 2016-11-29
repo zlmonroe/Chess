@@ -2,7 +2,6 @@
 #include "ChessBoard.h"
 #include "MoveGenerator.h"
 #include "printBitboard.h"
-
 int main() {
     ChessPlayer whitePlayer = ChessPlayer(0);
     ChessPlayer blackPlayer = ChessPlayer(1);
@@ -13,9 +12,10 @@ int main() {
 
     MoveGenerator moveGen = MoveGenerator(&chessBoard);
 
+    printChessBoard(chessBoard);
 
     bool checkmate=0, stalemate=0, player=0;
-    while (~(checkmate | stalemate)){
+    while (!(checkmate | stalemate)){
         std::cout << (!player ? "White's turn\n":"Black's turn\n");
 
         bool valid;

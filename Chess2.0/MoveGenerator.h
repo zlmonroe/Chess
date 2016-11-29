@@ -11,14 +11,14 @@ private:
     ChessBoard* chessBoard;
 
 public:
-    Bitboard getBishopMoves(uint8_t position, bool isBlack);
-    Bitboard getKnightMoves(uint8_t position, bool isBlack);
-    Bitboard getKingMoves(uint8_t position, bool isBlack);
-    Bitboard getPawnMoves(uint8_t position, bool isBlack);
-    Bitboard getQueenMoves(uint8_t position, bool isBlack);
-    Bitboard getRookMoves(uint8_t position, bool isBlack);
+    Bitboard getBishopMoves(unsigned short position, bool isBlack);
+    Bitboard getKnightMoves(unsigned short position, bool isBlack);
+    Bitboard getKingMoves(unsigned short position, bool isBlack);
+    Bitboard getPawnMoves(unsigned short position, bool isBlack);
+    Bitboard getQueenMoves(unsigned short position, bool isBlack);
+    Bitboard getRookMoves(unsigned short position, bool isBlack);
     bool isValidMove(unsigned short userMove);
-    void uncheckedMove(bool, short, uint8_t,uint8_t);
+    void uncheckedMove(bool, short, unsigned short,unsigned short);
     MoveGenerator(ChessBoard* chessBoard) {this->chessBoard=chessBoard;}
 };
 

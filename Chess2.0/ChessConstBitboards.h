@@ -5,6 +5,8 @@
     */
     #include <stdint.h>
     #include <iostream>
+    const bool DEBUG=0;
+
     typedef uint64_t Bitboard;
 
     const std::string PIECE_NAMES[6] = {"Pawn","Rook","Knight","Bishop","Queen","King"};
