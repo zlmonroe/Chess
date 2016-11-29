@@ -111,9 +111,9 @@ int main() {
 
 
     for (int bishop = 0; bishop < 2; bishop++) {
-        //database << "{";
+
         for (int sq = 0; sq < 64; sq++) {
-            //database << "{";
+
             uint64_t b[4096], a[4096], used[4096];
             Bitboard mask = bishop ? bmask(sq) : rmask(sq);
             int n = count_1s(mask);
@@ -130,13 +130,8 @@ int main() {
 
                 slides[bishop][sq][index] = a[i];
 
-                //database << a[i] << "ULL,";
-
             }
-
-            //database << "},\n";
         }
-        //database << "},\n";
     }
 
     std::ofstream database;
