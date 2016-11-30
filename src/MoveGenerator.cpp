@@ -22,16 +22,16 @@ Bitboard MoveGenerator::getRookMoves(unsigned short pos, bool isBlack) {
 }
 
 Bitboard MoveGenerator::getKnightMoves(unsigned short position, bool isBlack) {
-    Bitboard start = 1<<position;
+    Bitboard start = (Bitboard)1<<position;
     Bitboard clearA = COLUMNCLEAR[0];
     Bitboard clearAB = COLUMNCLEAR[0]&COLUMNCLEAR[1];
     Bitboard clearH = COLUMNCLEAR[7];
     Bitboard clearGH = COLUMNCLEAR[6]&COLUMNCLEAR[7];
     Bitboard own;
     if (isBlack)
-        own = ALLBLACKSTART; //Switch to allBlackPieces when implemented
+        own = chessBoard[0].AllBlackPieces; //Switch to allBlackPieces when implemented
     else
-        own = ALLWHITESTART; //Switch to allWhitePieces when implemented
+        own = chessBoard[0].AllWhitePieces; //Switch to allWhitePieces when implemented
 
     return ((((start&clearA)<<15)|((start&clearAB)<<6)|((start&clearAB)>>10)|((start&clearA)>>17)|((start&clearH)>>15)|((start&clearGH)>>6)|((start&clearGH)<<10)|(start&clearH)<<17)&~own);
 }
@@ -120,39 +120,39 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
     else {std::cout << "No piece found" << std::endl;}
     switch (piece) {
 
-case 0:
-    valid_moves = getPawnMoves(bStart, color);
-    break;
+        case 0:
+            valid_moves = getPawnMoves(bStart, color);
+            break;
 
-case 1:
+        case 1:
 
-    valid_moves = getRookMoves(bStart, color);
-    break;
+            valid_moves = getRookMoves(bStart, color);
+            break;
 
-case 2:
+        case 2:
 
-    valid_moves = getKnightMoves(bStart, color);
-    break;
+            valid_moves = getKnightMoves(bStart, color);
+            break;
 
-case 3:
+        case 3:
 
-    valid_moves = getBishopMoves(bStart, color);
-    break;
+            valid_moves = getBishopMoves(bStart, color);
+            break;
 
-case 4:
+        case 4:
 
-    valid_moves = getQueenMoves(bStart, color);
-    break;
+            valid_moves = getQueenMoves(bStart, color);
+            break;
 
-case 5:
+        case 5:
 
-    valid_moves = getKingMoves(bStart, color);
-    break;
+            valid_moves = getKingMoves(bStart, color);
+            break;
 
-default:
+        default:
 
-    std::cout<<"No piece found at that spot!"<<std::endl;
-    valid_moves = (Bitboard)0x0000;
+            std::cout<<"No piece found at that spot!"<<std::endl;
+            valid_moves = (Bitboard)0x0000;
 
     }
     std::cout <<"Your choice\n";
@@ -176,14 +176,24 @@ default:
 }
 
 void MoveGenerator::uncheckedMove(bool player, short piece, unsigned short start, unsigned short end) {
-    short whitePiece = chessBoard[0].findBoard(1,(Bitboard)1<<end);
+    /*short whitePiece = chessBoard[0].findBoard(1,(Bitboard)1<<end);
     short blackPiece = chessBoard[0].findBoard(0,(Bitboard)1<<end);
     std::cout << whitePiece << " " << blackPiece;
-    if (whitePiece>-1) chessBoard[0].pieces[0][whitePiece]-=((Bitboard)1<<end);
-    else if (blackPiece>-1) chessBoard[0].pieces[1][blackPiece]-=((Bitboard)1<<end);
+    if (whitePiece>-1)
+        chessBoard[0].pieces[0][whitePiece]-=((Bitboard)1<<end);
+    else if (blackPiece>-1)
+        chessBoard[0].pieces[1][blackPiece]-=((Bitboard)1<<end);*/
 
     chessBoard[0].pieces[player][piece] = chessBoard[0].pieces[player][piece] - ((Bitboard)1<<start) + ((Bitboard)1<<end);
     chessBoard[0].AllPieces = (chessBoard[0].AllPieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
-    chessBoard[0].AllBlackPieces = (chessBoard[0].AllBlackPieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
-    chessBoard[0].AllWhitePieces = (chessBoard[0].AllWhitePieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
+
+    if (player) {   // black
+        std::cout << "<black>";
+        chessBoard[0].AllWhitePieces -= chessBoard[0].AllWhitePieces & ((Bitboard)1 << end);    // capture white
+        chessBoard[0].AllBlackPieces = (chessBoard[0].AllBlackPieces - ((Bitboard)1 << start)) + ((Bitboard)1 << end);
+    } else {        // white
+        std::cout << "<white>";
+        chessBoard[0].AllBlackPieces -= chessBoard[0].AllBlackPieces & ((Bitboard)1 << end);    // capture black
+        chessBoard[0].AllWhitePieces = (chessBoard[0].AllWhitePieces - ((Bitboard)1 << start)) + ((Bitboard)1 << end);
+    }
 }
