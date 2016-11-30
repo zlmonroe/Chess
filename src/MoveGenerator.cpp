@@ -47,43 +47,23 @@ Bitboard MoveGenerator::getKingMoves(unsigned short position, bool isBlack) {
     Bitboard right_backward_diagonal_attack;
     Bitboard all_moves_possible;
 
-    if (!isBlack) {
 
-        left_attack = ((COLUMNCLEAR[0] & (ChessBoard::WhitePieces[5]) >> 1));
+    left_attack = ((COLUMNCLEAR[0] & (chessBoard[0].pieces[isBlack][5]) >> 1));
 
-        right_attack = ((COLUMNCLEAR[7] & (ChessBoard::WhitePieces[5]) << 1));
+    right_attack = ((COLUMNCLEAR[7] & (chessBoard[0].pieces[isBlack][5]) << 1));
 
-        forward_attack = (ChessBoard::WhitePieces[5] << 8);
+    forward_attack = (chessBoard[0].pieces[isBlack][5] << 8);
 
-        backward_attack = (ChessBoard::WhitePieces[5] >> 8);
+    backward_attack = (chessBoard[0].pieces[isBlack][5] >> 8);
 
-        left_forward_diagonal_attack = ((COLUMNCLEAR[0] & (ChessBoard::WhitePieces[5]) << 7));
+    left_forward_diagonal_attack = ((COLUMNCLEAR[0] & (chessBoard[0].pieces[isBlack][5]) << 7));
 
-        right_forward_diagonal_attack = ((COLUMNCLEAR[7] & (ChessBoard::WhitePieces[5]) << 9));
+    right_forward_diagonal_attack = ((COLUMNCLEAR[7] & (chessBoard[0].pieces[isBlack][5]) << 9));
 
-        left_backward_diagonal_attack = ((COLUMNCLEAR[0] & (ChessBoard::WhitePieces[5]) >> 9));
+    left_backward_diagonal_attack = ((COLUMNCLEAR[0] & (chessBoard[0].pieces[isBlack][5]) >> 9));
 
-        right_backward_diagonal_attack = ((COLUMNCLEAR[7] & (ChessBoard::WhitePieces[5]) >> 7));
+    right_backward_diagonal_attack = ((COLUMNCLEAR[7] & (chessBoard[0].pieces[isBlack][5]) >> 7));
 
-    } else {
-
-        left_attack = ((COLUMNCLEAR[0] & (ChessBoard::BlackPieces[5]) << 1));
-
-        right_attack = ((COLUMNCLEAR[7] & (ChessBoard::BlackPieces[5]) >> 1));
-
-        forward_attack = (ChessBoard::BlackPieces[[5] >> 8);
-
-        backward_attack = (ChessBoard::BlackPieces[[5] << 8);
-
-        left_forward_diagonal_attack = ((COLUMNCLEAR[0] & (ChessBoard::BlackPieces[[5]) >> 7));
-
-        right_forward_diagonal_attack = ((COLUMNCLEAR[7] & (ChessBoard::BlackPieces[[5]) >> 9));
-
-        left_backward_diagonal_attack = ((COLUMNCLEAR[0] & (ChessBoard::BlackPieces[[5]) << 9));
-
-        right_backward_diagonal_attack = ((COLUMNCLEAR[7] & (ChessBoard::BlackPieces[[5]) << 7));
-
-    }
 
     all_moves_possible = (left_attack | right_attack | forward_attack | backward_attack | left_forward_diagonal_attack | right_forward_diagonal_attack | left_backward_diagonal_attack | right_backward_diagonal_attack);
 
