@@ -32,7 +32,7 @@ void  printChessBoard(ChessBoard chessBoard) {
         else if ((chessBoard.pieces[1][3] >> i) & 0b1) board[i]="b";
         else if ((chessBoard.pieces[1][4] >> i) & 0b1) board[i]="q";
         else if ((chessBoard.pieces[1][5] >> i) & 0b1) board[i]="k";
-        else board[i]=(char)254;
+        else board[i]= (char)254;
     }
     std::cout << "    A B C D E F G H\n    ---------------\n8  |";
     for (int row = 7; row>=0; row--) {
