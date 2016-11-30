@@ -23,7 +23,7 @@ void ChessBoard::setupBoard() {
 }
 
 /**
- * Determines which
+ * Determines which piece is at loc
  * @param black true if it is a black piece
  * @param loc Bitboard with the position
  * @return index of piece

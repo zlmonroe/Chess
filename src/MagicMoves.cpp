@@ -1,7 +1,6 @@
 //
-// Created by jon on 11/25/2016.
+// Created by jon on 11/29/2016.
 //
-
 
 #include <iostream>
 #include "magics.h"
@@ -104,7 +103,7 @@ uint64_t index_to_uint64(int index, int bits, uint64_t m) {
 
 int main() {
 
-
+    std::cout << "starting...";
 
     static Bitboard slides[2][64][4096];
 
@@ -136,28 +135,29 @@ int main() {
 
     std::ofstream database;
     database.open ("slidingMoves.txt");
-    database << "static const Bitboard slides[2][64][4096] = {\n";
-    for (int bishop = 0; bishop < 2; bishop++) {
+    database << "static const Bitboard rookMoves[64][4096] = {\n";
+    for (int sq = 0; sq < 64; sq++) {
         database << "{";
-        for (int sq = 0; sq < 64; sq++) {
-            database << "{";
-            for (int index = 0; index < 4096; index++) {
-                database << slides[bishop][sq][index] << "ULL,";
-            }
-            database << "},\n";
+        for (int index = 0; index < 4096; index++) {
+            database << slides[0][sq][index] << "ULL,";
+        }
+        database << "},\n";
+    }
+    database << "};\n\n";
+
+    database << "static const Bitboard bishopMoves[64][512] = {\n";
+    for (int sq = 0; sq < 64; sq++) {
+        database << "{";
+        for (int index = 0; index < 512; index++) {
+            database << slides[1][sq][index] << "ULL,";
         }
         database << "},\n";
     }
 
 
     database << "};";
+
     database.close();
 
-   /* Bitboard test[2][2][2] = {
-            {{0,1},
-                    {2,3}},
-
-            {{4,5},{6,7}}
-    };*/
-
+    std::cout << "finished";
 }
