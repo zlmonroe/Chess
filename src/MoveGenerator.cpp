@@ -37,7 +37,57 @@ Bitboard MoveGenerator::getKnightMoves(unsigned short position, bool isBlack) {
 }
 
 Bitboard MoveGenerator::getKingMoves(unsigned short position, bool isBlack) {
-    return 0;
+    Bitboard left_attack;
+    Bitboard right_attack;
+    Bitboard forward_attack;
+    Bitboard backward_attack;
+    Bitboard left_forward_diagonal_attack;
+    Bitboard right_forward_diagonal_attack;
+    Bitboard left_backward_diagonal_attack;
+    Bitboard right_backward_diagonal_attack;
+    Bitboard all_moves_possible;
+
+    if (!isBlack) {
+
+        left_attack = ((COLUMNCLEAR[0] & (ChessBoard::WhitePieces[5]) >> 1));
+
+        right_attack = ((COLUMNCLEAR[7] & (ChessBoard::WhitePieces[5]) << 1));
+
+        forward_attack = (ChessBoard::WhitePieces[5] << 8);
+
+        backward_attack = (ChessBoard::WhitePieces[5] >> 8);
+
+        left_forward_diagonal_attack = ((COLUMNCLEAR[0] & (ChessBoard::WhitePieces[5]) << 7));
+
+        right_forward_diagonal_attack = ((COLUMNCLEAR[7] & (ChessBoard::WhitePieces[5]) << 9));
+
+        left_backward_diagonal_attack = ((COLUMNCLEAR[0] & (ChessBoard::WhitePieces[5]) >> 9));
+
+        right_backward_diagonal_attack = ((COLUMNCLEAR[7] & (ChessBoard::WhitePieces[5]) >> 7));
+
+    } else {
+
+        left_attack = ((COLUMNCLEAR[0] & (ChessBoard::BlackPieces[5]) << 1));
+
+        right_attack = ((COLUMNCLEAR[7] & (ChessBoard::BlackPieces[5]) >> 1));
+
+        forward_attack = (ChessBoard::BlackPieces[[5] >> 8);
+
+        backward_attack = (ChessBoard::BlackPieces[[5] << 8);
+
+        left_forward_diagonal_attack = ((COLUMNCLEAR[0] & (ChessBoard::BlackPieces[[5]) >> 7));
+
+        right_forward_diagonal_attack = ((COLUMNCLEAR[7] & (ChessBoard::BlackPieces[[5]) >> 9));
+
+        left_backward_diagonal_attack = ((COLUMNCLEAR[0] & (ChessBoard::BlackPieces[[5]) << 9));
+
+        right_backward_diagonal_attack = ((COLUMNCLEAR[7] & (ChessBoard::BlackPieces[[5]) << 7));
+
+    }
+
+    all_moves_possible = (left_attack | right_attack | forward_attack | backward_attack | left_forward_diagonal_attack | right_forward_diagonal_attack | left_backward_diagonal_attack | right_backward_diagonal_attack);
+
+    return all_moves_possible;
 }
 
 Bitboard MoveGenerator::getPawnMoves(unsigned short position, bool isBlack) {
