@@ -197,3 +197,36 @@ void MoveGenerator::uncheckedMove(bool player, short piece, unsigned short start
         chessBoard[0].AllWhitePieces = (chessBoard[0].AllWhitePieces - ((Bitboard)1 << start)) + ((Bitboard)1 << end);
     }
 }
+ Bitboard MoveGenerator::getAllMoves(bool color) {
+ 	Bitboard totalMoves = BLANK;
+ 	int piece;
+ 	Bitboard location;
+ 	for (int i = 0; i < 64; i++) {
+ 		location = 1 << i;
+ 		piece = this.chessBoard[0].findBoard(color, location);
+ 		if (piece> 0) {
+ 			switch (piece) {
+ 			case 0:
+ 				totalMoves = totalMoves | this.getPawnMoves(location, color);
+ 				break;
+ 			case 1:
+ 				totalMoves = totalMoves | this.getRookMoves(location, color);
+ 				break;
+ 			case 2:
+ 				totalMoves = totalMoves | this.getKnightMoves(location, color);
+ 				break;
+ 			case 3:
+ 				totalMoves = totalMoves |this.getBishopMoves(location, color);
+ 				break;
+ 			case 4:
+ 				totalMoves = totalMoves | this.getQueenMoves(location, color);
+  				break;
+  			case 5:
+  				totalMoves = totalMoves | this.getKingMoves(location, color);
+ 				break;
+ 				break; //not necessary
+  			}
+  		}
+  	}
+ 	return totalMoves;
+ }
