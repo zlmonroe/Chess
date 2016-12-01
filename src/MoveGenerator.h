@@ -17,6 +17,7 @@ public:
     Bitboard getPawnMoves(unsigned short position, bool isBlack);
     Bitboard getQueenMoves(unsigned short position, bool isBlack);
     Bitboard getRookMoves(unsigned short position, bool isBlack);
+    Bitboard getAllMoves(bool color);
     bool isValidMove(unsigned short userMove);
     void uncheckedMove(bool, short, unsigned short,unsigned short);
     MoveGenerator(ChessBoard* chessBoard) {this->chessBoard=chessBoard;}

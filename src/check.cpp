@@ -6,6 +6,6 @@
 Check::Check(MoveGenerator m){
   moves = m;
 }
- Bitboard Check::check(bool color) {
+ bool Check::check(bool color) {
  	return ((bool)(ChessBoard::pieces[color][5] & moves.getAllMoves(!color)));
  }
