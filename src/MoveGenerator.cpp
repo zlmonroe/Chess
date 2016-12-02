@@ -2,6 +2,7 @@
 // Created by jon on 10/31/2016.
 //
 
+
 #include "MoveGenerator.h"
 #include "magics.h"
 #include "ChessConstBitboards.h"
@@ -114,7 +115,7 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
     unsigned short bEnd = (userMove & 0b111111);
     unsigned short otherStuff = (userMove & 0b0111000000000000) >>12;
     bool color = (userMove & 0b1000000000000000)>>15;
-    short piece = chessBoard[0].findBoard(!color, (Bitboard)1<<bStart);
+    short piece = chessBoard[0].findBoard(color, (Bitboard)1<<bStart);
 
     if (piece>=0) std::cout << "Found " << PIECE_NAMES[piece] << "\n";
     else {std::cout << "No piece found" << std::endl;}
@@ -186,7 +187,9 @@ void MoveGenerator::uncheckedMove(bool player, short piece, unsigned short start
 
     chessBoard[0].pieces[player][piece] = chessBoard[0].pieces[player][piece] - ((Bitboard)1<<start) + ((Bitboard)1<<end);
     chessBoard[0].AllPieces = (chessBoard[0].AllPieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
-
+    short captureType = chessBoard[0].findBoard(!player, (Bitboard)1<<end);
+    if (captureType > -1)
+        chessBoard[0].pieces[!player][captureType]-=((Bitboard)1<<end);
     if (player) {   // black
         std::cout << "<black>";
         chessBoard[0].AllWhitePieces -= chessBoard[0].AllWhitePieces & ((Bitboard)1 << end);    // capture white

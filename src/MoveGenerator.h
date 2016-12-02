@@ -1,7 +1,7 @@
 //
 // Created by jon on 10/31/2016.
 //
-
+#pragma once
 
 #include "ChessConstBitboards.h"
 #include "ChessBoard.h"
