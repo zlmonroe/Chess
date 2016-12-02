@@ -83,14 +83,14 @@ Bitboard MoveGenerator::getPawnMoves(unsigned short position, bool isBlack) {
     Bitboard all_moves_possible;
 
     if (!isBlack) {
-                left_attack = ((COLUMNCLEAR[0] & pos) << 7) & (chessBoard[0].AllBlackPieces | chessBoard[0].Enpessant[0]);
-                right_attack = ((COLUMNCLEAR[7] & pos) << 9) & (chessBoard[0].AllBlackPieces | chessBoard[0].Enpessant[0]);
+                left_attack = ((COLUMNCLEAR[0] & pos) << 7) & (chessBoard[0].AllBlackPieces); // | chessBoard[0].Enpessant[0]);
+                right_attack = ((COLUMNCLEAR[7] & pos) << 9) & (chessBoard[0].AllBlackPieces); // | chessBoard[0].Enpessant[0]);
                 pawn_one_forward = ((pos << 8) & ~(chessBoard[0].AllPieces));
                 pawn_two_forward = (((((pos & ROWMASK[1]) << 8) & ~chessBoard[0].AllPieces)<<8) & ~chessBoard[0].AllPieces);
     }
     else {
-                left_attack = ((COLUMNCLEAR[0] & pos) >> 9) & (chessBoard[0].AllWhitePieces | chessBoard[0].Enpessant[1]);
-                right_attack = ((COLUMNCLEAR[7] & pos) >> 7) & (chessBoard[0].AllWhitePieces | chessBoard[0].Enpessant[1]);
+                left_attack = ((COLUMNCLEAR[0] & pos) >> 9) & (chessBoard[0].AllWhitePieces); // | chessBoard[0].Enpessant[1]);
+                right_attack = ((COLUMNCLEAR[7] & pos) >> 7) & (chessBoard[0].AllWhitePieces); // | chessBoard[0].Enpessant[1]);
                 pawn_one_forward = ((pos >> 8) & (~chessBoard[0].AllPieces));
                 pawn_two_forward = (((((pos & ROWMASK[6]) >> 8) & ~chessBoard[0].AllPieces)>>8) & ~chessBoard[0].AllPieces);
                 std::cout << "pawn two forward for black moves\n";
