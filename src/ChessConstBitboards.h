@@ -5,7 +5,7 @@
     */
     #include <stdint.h>
     #include <iostream>
-    const bool DEBUG=0;
+    const bool DEBUG=1;
 
     typedef uint64_t Bitboard;
 

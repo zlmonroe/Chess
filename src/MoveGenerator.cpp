@@ -2,7 +2,6 @@
 // Created by jon on 10/31/2016.
 //
 
-
 #include "MoveGenerator.h"
 #include "magics.h"
 #include "ChessConstBitboards.h"
@@ -84,14 +83,14 @@ Bitboard MoveGenerator::getPawnMoves(unsigned short position, bool isBlack) {
     Bitboard all_moves_possible;
 
     if (!isBlack) {
-                left_attack = ((COLUMNCLEAR[0] & pos) << 7) & (chessBoard[0].AllBlackPieces); // | chessBoard[0].Enpessant[0]);
-                right_attack = ((COLUMNCLEAR[7] & pos) << 9) & (chessBoard[0].AllBlackPieces); // | chessBoard[0].Enpessant[0]);
+                left_attack = ((COLUMNCLEAR[0] & pos) << 7) & (chessBoard[0].AllBlackPieces | chessBoard[0].Enpessant[0]);
+                right_attack = ((COLUMNCLEAR[7] & pos) << 9) & (chessBoard[0].AllBlackPieces | chessBoard[0].Enpessant[0]);
                 pawn_one_forward = ((pos << 8) & ~(chessBoard[0].AllPieces));
                 pawn_two_forward = (((((pos & ROWMASK[1]) << 8) & ~chessBoard[0].AllPieces)<<8) & ~chessBoard[0].AllPieces);
     }
     else {
-                left_attack = ((COLUMNCLEAR[0] & pos) >> 9) & (chessBoard[0].AllWhitePieces); // | chessBoard[0].Enpessant[1]);
-                right_attack = ((COLUMNCLEAR[7] & pos) >> 7) & (chessBoard[0].AllWhitePieces); // | chessBoard[0].Enpessant[1]);
+                left_attack = ((COLUMNCLEAR[0] & pos) >> 9) & (chessBoard[0].AllWhitePieces | chessBoard[0].Enpessant[1]);
+                right_attack = ((COLUMNCLEAR[7] & pos) >> 7) & (chessBoard[0].AllWhitePieces | chessBoard[0].Enpessant[1]);
                 pawn_one_forward = ((pos >> 8) & (~chessBoard[0].AllPieces));
                 pawn_two_forward = (((((pos & ROWMASK[6]) >> 8) & ~chessBoard[0].AllPieces)>>8) & ~chessBoard[0].AllPieces);
                 std::cout << "pawn two forward for black moves\n";
@@ -108,6 +107,7 @@ Bitboard MoveGenerator::getQueenMoves(unsigned short position, bool isBlack) {
     return getRookMoves(position, isBlack) | getBishopMoves(position, isBlack);
 }
 
+
 bool MoveGenerator::isValidMove(unsigned short userMove) {
 
     Bitboard valid_moves;
@@ -115,7 +115,7 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
     unsigned short bEnd = (userMove & 0b111111);
     unsigned short otherStuff = (userMove & 0b0111000000000000) >>12;
     bool color = (userMove & 0b1000000000000000)>>15;
-    short piece = chessBoard[0].findBoard(color, (Bitboard)1<<bStart);
+    short piece = chessBoard[0].findBoard(!color, (Bitboard)1<<bStart);
 
     if (piece>=0) std::cout << "Found " << PIECE_NAMES[piece] << "\n";
     else {std::cout << "No piece found" << std::endl;}
@@ -156,12 +156,14 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
             valid_moves = (Bitboard)0x0000;
 
     }
-    std::cout <<"Your choice\n";
-    printBitboard((Bitboard)1<<bEnd);
-    std::cout <<"Valid moves:\n";
-    printBitboard(valid_moves);
-    std::cout<<"Your choice and valid moves:\n";
-    printBitboard((Bitboard)1<<bEnd & valid_moves);
+    if (DEBUG) {
+        std::cout <<"Your choice\n";
+        printBitboard((Bitboard)1<<bEnd);
+        std::cout <<"Valid moves:\n";
+        printBitboard(valid_moves);
+        std::cout<<"Your choice and valid moves:\n";
+        printBitboard((Bitboard)1<<bEnd & valid_moves);
+    }
     if ((Bitboard)1<<bEnd & valid_moves) {
         uncheckedMove(color, piece, bStart,bEnd);
         return true;
@@ -187,9 +189,7 @@ void MoveGenerator::uncheckedMove(bool player, short piece, unsigned short start
 
     chessBoard[0].pieces[player][piece] = chessBoard[0].pieces[player][piece] - ((Bitboard)1<<start) + ((Bitboard)1<<end);
     chessBoard[0].AllPieces = (chessBoard[0].AllPieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
-    short captureType = chessBoard[0].findBoard(!player, (Bitboard)1<<end);
-    if (captureType > -1)
-        chessBoard[0].pieces[!player][captureType]-=((Bitboard)1<<end);
+
     if (player) {   // black
         std::cout << "<black>";
         chessBoard[0].AllWhitePieces -= chessBoard[0].AllWhitePieces & ((Bitboard)1 << end);    // capture white

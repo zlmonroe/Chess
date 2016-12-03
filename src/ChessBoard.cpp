@@ -31,7 +31,7 @@ void ChessBoard::setupBoard() {
 short ChessBoard::findBoard(bool black, Bitboard loc) {
     short i;
     for (i=5; i>=0; i--) {
-        if (pieces[black][i] & loc) {
+        if (pieces[!black][i] & loc) {
             break;
         }
     }
