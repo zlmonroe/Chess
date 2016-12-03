@@ -22,11 +22,11 @@ public:
     Bitboard getRookMoves(unsigned short position, bool isBlack);
     Bitboard getAllMoves(bool color);
 
-    bool check(bool);
+    bool check(bool, Bitboard);
     bool checkmate(bool color, ChessBoard*);
 
     bool isValidMove(unsigned short userMove);
-    void uncheckedMove(bool, short, unsigned short,unsigned short);
+    void uncheckedMove(bool, short, unsigned short,unsigned short, ChessBoard*);
     MoveGenerator(ChessBoard* chessBoard) {this->chessBoard=chessBoard;}
     MoveGenerator(){};
 };

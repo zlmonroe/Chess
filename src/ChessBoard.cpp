@@ -1,6 +1,9 @@
 #include "ChessBoard.h"
 #include "ChessConstBitboards.h"
 #include <ctype.h>
+#include <malloc.h>
+
+ChessBoard::ChessBoard(){};
 
 void ChessBoard::setupBoard() {
     pieces[0][0] = PAWNSTART & ALLWHITESTART;
@@ -31,9 +34,16 @@ void ChessBoard::setupBoard() {
 short ChessBoard::findBoard(bool black, Bitboard loc) {
     short i;
     for (i=5; i>=0; i--) {
-        if (pieces[!black][i] & loc) {
+        if (pieces[black][i] & loc) {
             break;
         }
     }
     return i;
+}
+
+ChessBoard* ChessBoard::ptrCpy(ChessBoard* oldPtr) {
+    ChessBoard* newPtr = (ChessBoard *) malloc(sizeof(oldPtr));
+    memcpy(newPtr, oldPtr, sizeof(oldPtr));
+    return newPtr;
+    //return oldPtr;
 }

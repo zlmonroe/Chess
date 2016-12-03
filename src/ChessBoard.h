@@ -2,8 +2,12 @@
 #include "ChessConstBitboards.h"
 #include <iostream>
 
+
 class ChessBoard {
 public:
+	ChessBoard();
+    static ChessBoard* ptrCpy(ChessBoard*);
+
 	/* The white piece positions */
 	//WhitePawns,WhiteRooks, WhiteKnights, WhiteBishops, WhiteQueens, WhiteKing
 

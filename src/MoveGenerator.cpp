@@ -17,6 +17,7 @@ Bitboard MoveGenerator::getBishopMoves(unsigned short pos, bool isBlack) {
 }
 
 Bitboard MoveGenerator::getRookMoves(unsigned short pos, bool isBlack) {
+    std::cout << "getRookMoves was called with pos = " << pos << " and isBlack = " << isBlack;
     Bitboard index = ((chessBoard[0].AllPieces & ROccupancy[pos]) * RMagic[pos]) >> (64-RBits[pos]);
     return rookMoves[pos][index] & ~(isBlack? chessBoard[0].AllBlackPieces : chessBoard[0].AllWhitePieces);
 }
@@ -47,27 +48,16 @@ Bitboard MoveGenerator::getKingMoves(unsigned short position, bool isBlack) {
     Bitboard right_backward_diagonal_attack;
     Bitboard all_moves_possible;
 
-
     left_attack = ((COLUMNCLEAR[0] & (chessBoard[0].pieces[isBlack][5]) >> 1));
-
     right_attack = ((COLUMNCLEAR[7] & (chessBoard[0].pieces[isBlack][5]) << 1));
-
     forward_attack = (chessBoard[0].pieces[isBlack][5] << 8);
-
     backward_attack = (chessBoard[0].pieces[isBlack][5] >> 8);
-
     left_forward_diagonal_attack = ((COLUMNCLEAR[0] & (chessBoard[0].pieces[isBlack][5]) << 7));
-
     right_forward_diagonal_attack = ((COLUMNCLEAR[7] & (chessBoard[0].pieces[isBlack][5]) << 9));
-
     left_backward_diagonal_attack = ((COLUMNCLEAR[0] & (chessBoard[0].pieces[isBlack][5]) >> 9));
-
     right_backward_diagonal_attack = ((COLUMNCLEAR[7] & (chessBoard[0].pieces[isBlack][5]) >> 7));
-
-
     all_moves_possible = (left_attack | right_attack | forward_attack | backward_attack | left_forward_diagonal_attack | right_forward_diagonal_attack | left_backward_diagonal_attack | right_backward_diagonal_attack);
-
-    return all_moves_possible;
+    return all_moves_possible & ~(isBlack ? chessBoard[0].AllBlackPieces : chessBoard[1].AllWhitePieces);
 }
 
 Bitboard MoveGenerator::getPawnMoves(unsigned short position, bool isBlack) {
@@ -104,6 +94,7 @@ Bitboard MoveGenerator::getPawnMoves(unsigned short position, bool isBlack) {
 
 
 Bitboard MoveGenerator::getQueenMoves(unsigned short position, bool isBlack) {
+    std::cout << "rookmove 3 " + position;
     return getRookMoves(position, isBlack) | getBishopMoves(position, isBlack);
 }
 
@@ -115,7 +106,7 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
     unsigned short bEnd = (userMove & 0b111111);
     unsigned short otherStuff = (userMove & 0b0111000000000000) >>12;
     bool color = (userMove & 0b1000000000000000)>>15;
-    short piece = chessBoard[0].findBoard(!color, (Bitboard)1<<bStart);
+    short piece = chessBoard[0].findBoard(color, (Bitboard)1<<bStart);
 
     if (piece>=0) std::cout << "Found " << PIECE_NAMES[piece] << "\n";
     else {std::cout << "No piece found" << std::endl;}
@@ -126,7 +117,7 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
             break;
 
         case 1:
-
+        std::cout << "getrook 4" + bStart;
             valid_moves = getRookMoves(bStart, color);
             break;
 
@@ -165,8 +156,22 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
         printBitboard((Bitboard)1<<bEnd & valid_moves);
     }
     if ((Bitboard)1<<bEnd & valid_moves) {
-        uncheckedMove(color, piece, bStart,bEnd);
-        return true;
+        //ChessBoard* testBoard = ChessBoard::ptrCpy(chessBoard);
+        //uncheckedMove(color, piece, bStart, bEnd, testBoard);
+
+        Bitboard newKing = chessBoard[0].pieces[color][5];
+        newKing -= newKing & (Bitboard)1<<bStart;
+        if(!newKing) {
+            newKing += (Bitboard)1<<bEnd;
+        }
+        if(!check(color, newKing)) {
+            //chessBoard = testBoard;
+            uncheckedMove(color, piece, bStart, bEnd, chessBoard);
+            return true;
+        }
+        //uncheckedMove(color, piece, bStart, bEnd, chessBoard);
+
+        return false;
     }
     else {
         if (DEBUG) {
@@ -178,58 +183,59 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
     }
 }
 
-void MoveGenerator::uncheckedMove(bool player, short piece, unsigned short start, unsigned short end) {
-    /*short whitePiece = chessBoard[0].findBoard(1,(Bitboard)1<<end);
-    short blackPiece = chessBoard[0].findBoard(0,(Bitboard)1<<end);
-    std::cout << whitePiece << " " << blackPiece;
-    if (whitePiece>-1)
-        chessBoard[0].pieces[0][whitePiece]-=((Bitboard)1<<end);
-    else if (blackPiece>-1)
-        chessBoard[0].pieces[1][blackPiece]-=((Bitboard)1<<end);*/
+void MoveGenerator::uncheckedMove(bool player, short piece, unsigned short start, unsigned short end, ChessBoard* cb) {
 
-    chessBoard[0].pieces[player][piece] = chessBoard[0].pieces[player][piece] - ((Bitboard)1<<start) + ((Bitboard)1<<end);
-    chessBoard[0].AllPieces = (chessBoard[0].AllPieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
-
+    cb[0].pieces[player][piece] = cb[0].pieces[player][piece] - ((Bitboard)1<<start) + ((Bitboard)1<<end);
+    cb[0].AllPieces = (cb[0].AllPieces - ((Bitboard)1<<start)) + ((Bitboard)1<<end);
+    short captureType = cb[0].findBoard(!player, (Bitboard)1<<end);
+    if (captureType > -1) {
+        cb[0].pieces[player][captureType] -= ((Bitboard) 1 << end);
+    }
     if (player) {   // black
         std::cout << "<black>";
-        chessBoard[0].AllWhitePieces -= chessBoard[0].AllWhitePieces & ((Bitboard)1 << end);    // capture white
-        chessBoard[0].AllBlackPieces = (chessBoard[0].AllBlackPieces - ((Bitboard)1 << start)) + ((Bitboard)1 << end);
+        cb[0].AllWhitePieces -= cb[0].AllWhitePieces & ((Bitboard)1 << end);    // capture white
+        cb[0].AllBlackPieces = (cb[0].AllBlackPieces - ((Bitboard)1 << start)) + ((Bitboard)1 << end);
     } else {        // white
         std::cout << "<white>";
-        chessBoard[0].AllBlackPieces -= chessBoard[0].AllBlackPieces & ((Bitboard)1 << end);    // capture black
-        chessBoard[0].AllWhitePieces = (chessBoard[0].AllWhitePieces - ((Bitboard)1 << start)) + ((Bitboard)1 << end);
+        cb[0].AllBlackPieces -= cb[0].AllBlackPieces & ((Bitboard)1 << end);    // capture black
+        cb[0].AllWhitePieces = (cb[0].AllWhitePieces - ((Bitboard)1 << start)) + ((Bitboard)1 << end);
     }
+    std::cout << "\n This is cb\n";
+    printChessBoard(cb[0]);
 }
+
+
  Bitboard MoveGenerator::getAllMoves(bool color) {
- 	Bitboard totalMoves = BLANK;
+ 	Bitboard totalMoves = 0ULL;
  	int piece;
- 	Bitboard location;
- 	for (int i = 0; i < 64; i++) {
- 		location = 1 << i;
- 		piece = chessBoard[0].findBoard(color, location);
+ 	unsigned short loc;
+ 	for (loc = 0; loc < 64; loc++) {
+ 		piece = chessBoard[0].findBoard(color, (Bitboard)1<<loc);
  		if (piece >= 0) {
+            std::cout << "\nGUY's IT'S HERE!!!! " << PIECE_NAMES[piece] << "\n";
  			switch (piece) {
  			case 0:
- 				totalMoves = totalMoves | getPawnMoves(location, color);
+ 				totalMoves |= getPawnMoves(loc, color);
  				break;
  			case 1:
- 				totalMoves = totalMoves | getRookMoves(location, color);
+            std::cout << "getrook 5 " + loc;
+ 				totalMoves |= getRookMoves(loc, color);
  				break;
  			case 2:
- 				totalMoves = totalMoves | getKnightMoves(location, color);
+ 				totalMoves |= getKnightMoves(loc, color);
  				break;
  			case 3:
- 				totalMoves = totalMoves | getBishopMoves(location, color);
+ 				totalMoves |= getBishopMoves(loc, color);
  				break;
  			case 4:
- 				totalMoves = totalMoves | getQueenMoves(location, color);
+ 				totalMoves |= getQueenMoves(loc, color);
   				break;
   			case 5:
-  				totalMoves = totalMoves | getKingMoves(location, color);
- 				break;
- 				break; //not necessary
+  				totalMoves |= getKingMoves(loc, color);
   			}
   		}
   	}
+     std::cout << "\nGUY's THE BITBOARD IS HERE\n";
+     printBitboard(totalMoves);
  	return totalMoves;
  }

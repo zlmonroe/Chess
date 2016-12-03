@@ -1,75 +1,81 @@
 #include "MoveGenerator.h"
 #include "ChessConstBitboards.h"
 
+
 //color is the color of the defending piece
- bool MoveGenerator::check(bool color) {
- 	return ((bool)(chessBoard[0].pieces[color][5] & getAllMoves(!color)));
+ bool MoveGenerator::check(bool color, Bitboard king) {
+ 	return (bool)(king & getAllMoves(!color));
  }
 
  bool MoveGenerator::checkmate1(bool color, Bitboard kingPos){//the color should be the color of the defending piece!
-    short i;
-    for(i=-1; kingPos; kingPos>>=1, i++)
-	return (bool)(getKingMoves(i,color)&~getAllMoves(!color));
+    //short i;
+    //for(i=-1; kingPos; kingPos>>=1, i++)
+     unsigned short i = 0;
+     for(Bitboard b = 1ULL; kingPos ^ b; b <<= 1, i++)
+	 return (bool)(getKingMoves(i,color)&~getAllMoves(!color));
  }
 
-bool MoveGenerator::checkmate(bool color, ChessBoard* c) {
-	if (checkmate1(color, c[0].pieces[color][5])) {
+bool MoveGenerator::checkmate(bool color, ChessBoard* cb) {
+	if (checkmate1(color, cb[0].pieces[color][5])) {
 		return false;
 	}
-	else if (checkmate2(color, c)) {
+	else if (checkmate2(color, cb)) {
 		return false;
 	}
 	return true;
 }
 
-bool MoveGenerator::checkmate2(bool color, ChessBoard*  c){
+bool MoveGenerator::checkmate2(bool color, ChessBoard*  cb){
 	Bitboard attackingPiece;
 	Bitboard attackingMove = 0;
 	bool attackNotFound = true;
 	Bitboard allMovesDefend = getAllMoves(color);
-	int i=0;
-	while (i < 5 && attackNotFound) {
-		Bitboard pieceBoard = c[0].pieces[!color][i];
-		unsigned short j;
+    unsigned short j, i;
+	for (i = 0; i < 5 && attackNotFound; i++) {
+		Bitboard pieceBoard = cb[0].pieces[!color][i];
+        j = 0;
 		while (pieceBoard) {
-			if ((pieceBoard & 0b1) == 0b1) {
+
+			if (pieceBoard & 0b1) {
+
 				switch (i) {
 				case 0:
-					if (c[0].pieces[color][5] & getPawnMoves(j, !color)) {
-						attackingPiece = c[0].pieces[!color][0];
+					if (cb[0].pieces[color][5] & getPawnMoves(j, !color)) {
+						attackingPiece = cb[0].pieces[!color][0];
 						bool attackNotFound = false;
 					}
 					break;
 				case 1:
-					if (c[0].pieces[color][5] & getRookMoves(j, !color)) {
-						attackingPiece = c[0].pieces[!color][1];
+					if (cb[0].pieces[color][5] & getRookMoves(j, !color)) {
+						attackingPiece = cb[0].pieces[!color][1];
+                        std::cout << "rookcall2 " + i;
 						attackingMove = getRookMoves(i, !color);
 						bool attackNotFound = false;
 					}
 					break;
 				case 2:
-					if (c[0].pieces[color][5] & getKnightMoves(j, !color)) {
-						attackingPiece = c[0].pieces[!color][2];
+					if (cb[0].pieces[color][5] & getKnightMoves(j, !color)) {
+						attackingPiece = cb[0].pieces[!color][2];
 						bool attackNotFound = false;
 					}
 					break;
 				case 3:
-					if (c[0].pieces[color][5] & getBishopMoves(j, !color)) {
-						attackingPiece = c[0].pieces[!color][3];
+					if (cb[0].pieces[color][5] & getBishopMoves(j, !color)) {
+						attackingPiece = cb[0].pieces[!color][3];
 						attackingMove = getBishopMoves(i, !color);
 						bool attackNotFound = false;
 					}
 					break;
 				case 4:
-					if (c[0].pieces[color][5] & getQueenMoves(j, !color)) {
-						attackingPiece = c[0].pieces[!color][4];
+					if (cb[0].pieces[color][5] & getQueenMoves(j, !color)) {
+						attackingPiece = cb[0].pieces[!color][4];
 						attackingMove = getQueenMoves(i, !color);
 						bool attackNotFound = false;
 					}
 					break;
 				}
 				j++;
-				pieceBoard >> 1;
+				pieceBoard >>= 1;
 			}
 		}
 	}
@@ -77,12 +83,12 @@ bool MoveGenerator::checkmate2(bool color, ChessBoard*  c){
 		return true;
 	}
 	else if(attackingMove) {
-		int rowAttack = i / 8;
-		int colAttack = i % 8;
-		short k;
-		Bitboard kingLocationTemp = c[0].pieces[color][5];
-		Bitboard kingLocation = c[0].pieces[color][5];
-		for (k = -1; kingLocationTemp; kingLocationTemp >>= 1, k++);
+		int rowAttack = j / 8;
+		int colAttack = j % 8;
+		//Bitboard kingLocationTemp = cb[0].pieces[color][5];
+		Bitboard kingLocation = cb[0].pieces[color][5];
+        unsigned short k;
+		for (Bitboard b = 1ULL; kingLocation ^ b; b <<= 1, k++);
 		int rowKing = k / 8;
 		int colKing = k % 8;
 		if (i == 1) {
