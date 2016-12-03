@@ -22,7 +22,7 @@ public:
     Bitboard getRookMoves(unsigned short position, bool isBlack);
     Bitboard getAllMoves(bool color);
 
-    bool check(bool, Bitboard);
+    bool check(bool, ChessBoard*);
     bool checkmate(bool color, ChessBoard*);
 
     bool isValidMove(unsigned short userMove);

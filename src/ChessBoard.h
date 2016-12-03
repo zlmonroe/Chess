@@ -6,7 +6,7 @@
 class ChessBoard {
 public:
 	ChessBoard();
-    static ChessBoard* ptrCpy(ChessBoard*);
+	ChessBoard(const ChessBoard*);
 
 	/* The white piece positions */
 	//WhitePawns,WhiteRooks, WhiteKnights, WhiteBishops, WhiteQueens, WhiteKing

@@ -156,15 +156,11 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
         printBitboard((Bitboard)1<<bEnd & valid_moves);
     }
     if ((Bitboard)1<<bEnd & valid_moves) {
-        //ChessBoard* testBoard = ChessBoard::ptrCpy(chessBoard);
-        //uncheckedMove(color, piece, bStart, bEnd, testBoard);
+        ChessBoard* testBoard = new ChessBoard(chessBoard[0]);
+        uncheckedMove(color, piece, bStart, bEnd, testBoard);
 
         Bitboard newKing = chessBoard[0].pieces[color][5];
-        newKing -= newKing & (Bitboard)1<<bStart;
-        if(!newKing) {
-            newKing += (Bitboard)1<<bEnd;
-        }
-        if(!check(color, newKing)) {
+        if(!check(color, testBoard)) {
             //chessBoard = testBoard;
             uncheckedMove(color, piece, bStart, bEnd, chessBoard);
             return true;

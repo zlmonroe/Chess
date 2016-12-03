@@ -3,8 +3,8 @@
 
 
 //color is the color of the defending piece
- bool MoveGenerator::check(bool color, Bitboard king) {
- 	return (bool)(king & getAllMoves(!color));
+ bool MoveGenerator::check(bool color, ChessBoard* cb) {
+ 	return (bool)(cb[0].pieces[color][5] & getAllMoves(!color));
  }
 
  bool MoveGenerator::checkmate1(bool color, Bitboard kingPos){//the color should be the color of the defending piece!
