@@ -25,7 +25,7 @@ bool MoveGenerator::checkmate(bool color, ChessBoard* cb) {
 	return false;
 }
 
-bool MoveGenerator::checkmate2(bool color, ChessBoard*  cb){
+bool MoveGenerator::checkmate2(bool color, ChessBoard* cb){
 	Bitboard attackingPiece = 0;
 	Bitboard attackingMove = 0;
 	bool attackNotFound = true;
@@ -95,75 +95,75 @@ bool MoveGenerator::checkmate2(bool color, ChessBoard*  cb){
 			if (rowAttack == rowKing) {
 				if (rowAttack < rowKing) {
 					for (int l = rowAttack-1; l > 0; l--) {
-						attackingMove & ROWCLEAR[l];
+						attackingMove &= ROWCLEAR[l];
 					}
 				}
 				else {
 					for (int l = rowAttack + 1; l < 0; l++) {
-						attackingMove & ROWCLEAR[l];
+						attackingMove &= ROWCLEAR[l];
 					}
 				}
 				for (int l = 0; l > colAttack; l++) {
-					attackingMove & COLUMNCLEAR[l];
+					attackingMove &= COLUMNCLEAR[l];
 				}
 				for (int l = 0; l < colAttack; l--) {
-					attackingMove & COLUMNCLEAR[l];
+					attackingMove &= COLUMNCLEAR[l];
 				}
 			}
 			else {
 				if (colAttack < colKing) {
 					for (int l = colAttack - 1; l > 0; l--) {
-						attackingMove & COLUMNCLEAR[l];
+						attackingMove &= COLUMNCLEAR[l];
 					}
 				}
 				else {
 					for (int l = colAttack + 1; l < 0; l++) {
-						attackingMove & COLUMNCLEAR[l];
+						attackingMove &= COLUMNCLEAR[l];
 					}
 				}
 				for (int l = 0; l > rowAttack; l++) {
-					attackingMove & ROWCLEAR[l];
+					attackingMove &= ROWCLEAR[l];
 				}
 				for (int l = 0; l < rowAttack; l--) {
-					attackingMove & ROWCLEAR[l];
+					attackingMove &= ROWCLEAR[l];
 				}
 			}
 		}
 		else {
 			if (rowAttack < rowKing) {
 				for (int l = rowAttack - 1; l > 0; l--) {
-					attackingMove & ROWCLEAR[l];
+					attackingMove &= ROWCLEAR[l];
 				}
 				for (int l = rowKing + 1; l < 0; l++) {
-					attackingMove & ROWCLEAR[l];
+					attackingMove &= ROWCLEAR[l];
 				}
 			}
 			else if (rowAttack > rowKing) {
 				for (int l = rowKing - 1; l > 0; l--) {
-					attackingMove & ROWCLEAR[l];
+					attackingMove &= ROWCLEAR[l];
 				}
 				for (int l = rowAttack + 1; l < 0; l++) {
-					attackingMove & ROWCLEAR[l];
+					attackingMove &= ROWCLEAR[l];
 				}
 			}
 			if (colAttack < colKing) {
 				for (int l = colAttack - 1; l > 0; l--) {
-					attackingMove & COLUMNCLEAR[l];
+					attackingMove &= COLUMNCLEAR[l];
 				}
 				for (int l = colKing + 1; l < 0; l++) {
-					attackingMove & COLUMNCLEAR[l];
+					attackingMove &= COLUMNCLEAR[l];
 				}
 			}
 			else if (colAttack > colKing) {
 				for (int l = colKing - 1; l > 0; l--) {
-					attackingMove & COLUMNCLEAR[l];
+					attackingMove &= COLUMNCLEAR[l];
 				}
 				for (int l = colAttack + 1; l < 0; l++) {
-					attackingMove & COLUMNCLEAR[l];
+					attackingMove &= COLUMNCLEAR[l];
 				}
 			}
 		}
-		return attackingMove & kingLocation;
+		return 0 != (attackingMove & kingLocation);
 	}
 
 }
