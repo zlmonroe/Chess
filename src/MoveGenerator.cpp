@@ -159,7 +159,7 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
             uncheckedMove(color, piece, bStart, bEnd, chessBoard);
             return true;
         } else {
-            std::cout << "That move would put you into check";
+            std::cout << "That move would put you into check\n";
             return false;
         }
     }
