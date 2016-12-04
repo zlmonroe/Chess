@@ -11,18 +11,18 @@
     //short i;
     //for(i=-1; kingPos; kingPos>>=1, i++)
      unsigned short i = 0;
-     for(Bitboard b = 1ULL; kingPos ^ b; b <<= 1, i++)
+     for(Bitboard b = 1ULL; kingPos ^ b; b <<= 1, i++);
 	 return (bool)(getKingMoves(i,color,chessBoard)&~getAllMoves(!color, chessBoard));
  }
 
 bool MoveGenerator::checkmate(bool color, ChessBoard* cb) {
 	if (checkmate1(color, cb[0].pieces[color][5])) {
-		return false;
+		return true;
 	}
 	else if (checkmate2(color, cb)) {
-		return false;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 bool MoveGenerator::checkmate2(bool color, ChessBoard*  cb){
@@ -30,7 +30,7 @@ bool MoveGenerator::checkmate2(bool color, ChessBoard*  cb){
 	Bitboard attackingMove = 0;
 	bool attackNotFound = true;
 	Bitboard allMovesDefend = getAllMoves(color, chessBoard);
-    unsigned short j, i;
+    unsigned short j = 0, i;
 	for (i = 0; i < 5 && attackNotFound; i++) {
 		Bitboard pieceBoard = cb[0].pieces[!color][i];
         j = 0;
@@ -39,39 +39,41 @@ bool MoveGenerator::checkmate2(bool color, ChessBoard*  cb){
 			if (pieceBoard & 0b1) {
 
 				switch (i) {
-				case 0:
-					if (cb[0].pieces[color][5] & getPawnMoves(j, !color, chessBoard)) {
-						attackingPiece = cb[0].pieces[!color][0];
-						bool attackNotFound = false;
-					}
-					break;
-				case 1:
-					if (cb[0].pieces[color][5] & getRookMoves(j, !color, chessBoard)) {
-						attackingPiece = cb[0].pieces[!color][1];
-						attackingMove = getRookMoves(i, !color, chessBoard);
-						bool attackNotFound = false;
-					}
-					break;
-				case 2:
-					if (cb[0].pieces[color][5] & getKnightMoves(j, !color, chessBoard)) {
-						attackingPiece = cb[0].pieces[!color][2];
-						bool attackNotFound = false;
-					}
-					break;
-				case 3:
-					if (cb[0].pieces[color][5] & getBishopMoves(j, !color, chessBoard)) {
-						attackingPiece = cb[0].pieces[!color][3];
-						attackingMove = getBishopMoves(i, !color, chessBoard);
-						bool attackNotFound = false;
-					}
-					break;
-				case 4:
-					if (cb[0].pieces[color][5] & getQueenMoves(j, !color, chessBoard)) {
-						attackingPiece = cb[0].pieces[!color][4];
-						attackingMove = getQueenMoves(i, !color, chessBoard);
-						bool attackNotFound = false;
-					}
-					break;
+					case 0:
+						if (cb[0].pieces[color][5] & getPawnMoves(j, !color, chessBoard)) {
+							attackingPiece = cb[0].pieces[!color][0];
+							attackNotFound = false;
+						}
+						break;
+					case 1:
+						if (cb[0].pieces[color][5] & getRookMoves(j, !color, chessBoard)) {
+							attackingPiece = cb[0].pieces[!color][1];
+							attackingMove = getRookMoves(i, !color, chessBoard);
+							attackNotFound = false;
+						}
+						break;
+					case 2:
+						if (cb[0].pieces[color][5] & getKnightMoves(j, !color, chessBoard)) {
+							attackingPiece = cb[0].pieces[!color][2];
+							attackNotFound = false;
+						}
+						break;
+					case 3:
+						if (cb[0].pieces[color][5] & getBishopMoves(j, !color, chessBoard)) {
+							attackingPiece = cb[0].pieces[!color][3];
+							attackingMove = getBishopMoves(i, !color, chessBoard);
+							attackNotFound = false;
+						}
+						break;
+					case 4:
+						if (cb[0].pieces[color][5] & getQueenMoves(j, !color, chessBoard)) {
+							attackingPiece = cb[0].pieces[!color][4];
+							attackingMove = getQueenMoves(i, !color, chessBoard);
+							attackNotFound = false;
+						}
+						break;
+					default:
+						break;
 				}
 				j++;
 				pieceBoard >>= 1;
@@ -85,7 +87,7 @@ bool MoveGenerator::checkmate2(bool color, ChessBoard*  cb){
 		int rowAttack = j / 8;
 		int colAttack = j % 8;
 		Bitboard kingLocation = cb[0].pieces[color][5];
-        unsigned short k;
+        unsigned short k = 0;
 		for (Bitboard b = 1ULL; kingLocation ^ b; b <<= 1, k++);
 		int rowKing = k / 8;
 		int colKing = k % 8;

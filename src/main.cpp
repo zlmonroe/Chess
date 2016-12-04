@@ -20,10 +20,11 @@ int main() {
 
         if (moveGen.check(player, &chessBoard)) {
             if (moveGen.checkmate(player, &chessBoard)) {
-                std::cout << (player ? "Black" : "White") << " in in checkmate. " << (!player ? "Black" : "White") << " wins!";
+                std::cout << (player ? "Black" : "White") << " in in checkmate. " << (!player ? "Black" : "White") << " wins!\n";
+                checkmate = true;
                 break;
             } else {
-                std::cout << (player ? "Black" : "White") << " is currently in check";
+                std::cout << (player ? "Black" : "White") << " is currently in check\n";
             }
 
         }
@@ -43,4 +44,6 @@ int main() {
 
         player=!player;
     }
+    std::cout << "Press any key to exit";
+    std::getchar();
 }
