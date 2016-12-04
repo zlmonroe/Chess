@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <unordered_map>
+//#include <unordered_map>
 class ChessPlayer {
 public:
 	ChessPlayer(bool c);

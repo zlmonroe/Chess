@@ -1,11 +1,12 @@
 #ifndef ChessConstants_H
 #define ChessConstants_H
+#define DEBUG false
     /*
     *All constants to be defined for the chessboard
     */
     #include <stdint.h>
     #include <iostream>
-    const bool DEBUG=1;
+    //const bool DEBUG=false;
 
     typedef uint64_t Bitboard;
 
@@ -46,7 +47,7 @@
     0b0000000011111111111111111111111111111111111111111111111111111111
     };
 
-    //Masking and Clearing collumns
+    //Masking and Clearing columns
 
     //Masking
     const Bitboard COLUMNMASK[] = {

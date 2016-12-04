@@ -18,13 +18,23 @@ int main() {
     while (!(checkmate | stalemate)){
         std::cout << (!player ? "White's turn\n":"Black's turn\n");
 
+        if (moveGen.check(player, &chessBoard)) {
+            if (moveGen.checkmate(player, &chessBoard)) {
+                std::cout << (player ? "Black" : "White") << " in in checkmate. " << (!player ? "Black" : "White") << " wins!";
+                break;
+            } else {
+                std::cout << (player ? "Black" : "White") << " is currently in check";
+            }
+
+        }
         bool valid;
         unsigned short userMove;
         do {
+
+
             userMove = players[player].getConvertInput();
 
             valid = moveGen.isValidMove(userMove);
-
             std::cout << "That move is ";
             std::cout << (valid ? "valid\n":"not valid\n");
         } while (!valid);

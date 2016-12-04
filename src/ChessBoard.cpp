@@ -1,6 +1,5 @@
 #include "ChessBoard.h"
 #include "ChessConstBitboards.h"
-#include <ctype.h>
 
 ChessBoard::ChessBoard(){};
 

@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 
 typedef uint64_t Bitboard;
 

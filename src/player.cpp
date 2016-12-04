@@ -2,8 +2,6 @@
 //
 #include "player.h"
 #include "ChessConstBitboards.h"
-#include <iostream>
-#include <string>
 #include <bitset>
 
 ChessPlayer::ChessPlayer(bool c) {
@@ -23,7 +21,8 @@ unsigned short ChessPlayer::getConvertInput() {
 	std::string input;
 
 	std::cout << "Enter your move:\n";
-	std::getline(std::cin, input);
+	//std::getline(std::cin, input);
+    std::cin >> input;
 
 	startC = ((int)toupper(input[0])-65);
 	startR = ((int)input[1]-49);
@@ -61,6 +60,8 @@ unsigned short ChessPlayer::getConvertInput() {
 	}
 
 	unsigned short move = (color<<15) | (spInt << 12) | (stPos<<6) | (enPos);
-	if (DEBUG) std::cout << "start: " << stPos << " end: " << enPos << "\n";
+#if DEBUG
+	std::cout << "start: " << stPos << " end: " << enPos << "\n";
+#endif
 	return move;
 }

@@ -14,13 +14,13 @@ private:
 
 public:
 
-    Bitboard getBishopMoves(unsigned short position, bool isBlack);
-    Bitboard getKnightMoves(unsigned short position, bool isBlack);
-    Bitboard getKingMoves(unsigned short position, bool isBlack);
-    Bitboard getPawnMoves(unsigned short position, bool isBlack);
-    Bitboard getQueenMoves(unsigned short position, bool isBlack);
-    Bitboard getRookMoves(unsigned short position, bool isBlack);
-    Bitboard getAllMoves(bool color);
+    Bitboard getBishopMoves(unsigned short position, bool isBlack, ChessBoard*);
+    Bitboard getKnightMoves(unsigned short position, bool isBlack, ChessBoard*);
+    Bitboard getKingMoves(unsigned short position, bool isBlack, ChessBoard*);
+    Bitboard getPawnMoves(unsigned short position, bool isBlack, ChessBoard*);
+    Bitboard getQueenMoves(unsigned short position, bool isBlack, ChessBoard*);
+    Bitboard getRookMoves(unsigned short position, bool isBlack, ChessBoard*);
+    Bitboard getAllMoves(bool color, ChessBoard*);
 
     bool check(bool, ChessBoard*);
     bool checkmate(bool color, ChessBoard*);
