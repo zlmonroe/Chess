@@ -26,7 +26,7 @@ bool MoveGenerator::checkmate(bool color, ChessBoard* cb) {
 }
 
 bool MoveGenerator::checkmate2(bool color, ChessBoard*  cb){
-	Bitboard attackingPiece;
+	Bitboard attackingPiece = 0;
 	Bitboard attackingMove = 0;
 	bool attackNotFound = true;
 	Bitboard allMovesDefend = getAllMoves(color, chessBoard);

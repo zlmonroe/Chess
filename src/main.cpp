@@ -2,6 +2,7 @@
 #include "ChessBoard.h"
 #include "MoveGenerator.h"
 #include "printBitboard.h"
+
 int main() {
     ChessPlayer whitePlayer = ChessPlayer(0);
     ChessPlayer blackPlayer = ChessPlayer(1);

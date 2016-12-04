@@ -153,8 +153,6 @@ bool MoveGenerator::isValidMove(unsigned short userMove) {
     if ((Bitboard)1<<bEnd & valid_moves) {
         ChessBoard* testBoard = new ChessBoard(chessBoard[0]);
         uncheckedMove(color, piece, bStart, bEnd, testBoard);
-        printBitboard(testBoard[0].AllPieces);
-        std::cout << !check(color, testBoard);
         //Bitboard newKing = chessBoard[0].pieces[color][5];
         if(!check(color, testBoard)) {
             //chessBoard = testBoard;
